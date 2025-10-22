@@ -101,7 +101,9 @@ const openScentMenu = () => {
 const closeScentMenu = () => {
   hoverTimeout = setTimeout(() => {
     showScentDropdown.value = false
-  }, 20) // Delay 100ms để tránh mất hover khi rê chuột
+
+  }, 50) // Delay 100ms để tránh mất hover khi rê chuột
+
 }
 const openCategoryMenu = () => {
   clearTimeout(hoverTimeout)
@@ -111,7 +113,9 @@ const openCategoryMenu = () => {
 const closeCategoryMenu = () => {
   hoverTimeout = setTimeout(() => {
     showCategoryDropdown.value = false
-  }, 20) // Delay 200ms để tránh mất hover khi rê chuột
+
+  }, 50) // Delay 200ms để tránh mất hover khi rê chuột
+
 }
 const goToCategory = (id) => {
   router.push(`/category/products/${id}`)

@@ -21,7 +21,7 @@
             <div class="product-info">
               <h3 class="product-name">{{ p.name }}</h3>
               <p class="product-price">{{ formatCurrency(p.price) }}</p>
-              <p class="product-desc" v-if="p.short_description">{{ p.short_description }}</p>
+
 
               <div class="product-actions">
                 <router-link :to="`/product/${p.id}`" class="btn btn-detail">Xem chi tiết</router-link>
@@ -110,6 +110,7 @@ const addToCart = (id) => {
   padding: 0 16px;
 }
 .product-list {
+/* <<<<<<< HEAD
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -162,10 +163,63 @@ const addToCart = (id) => {
   background: transparent;
   border: 1px solid #111;
   color: #111;
+======= */
+    display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     flex-direction: column; gap: 10px; }
+
+/* mỗi item dạng list */
+.product-item {
+  display: inline-block;
+  gap: 10px;
+  padding: 20px;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  align-items: center;
+}
+.product-image {
+  width: 300px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.product-name {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.product-price {
+   margin: 0 0 20px;            /* thay đổi khoảng cách từ giá xuống nút */
+  font-weight: 700;
+  color: #111;
+}
+
+.product-actions {
+  display: flex;
+  gap: 5px;                 /* khoảng cách giữa btn và btn detail*/
+}
+.btn {
+  padding: 10px 10px;
+  border-radius: 80px;
+  font-weight: 600;
+  text-decoration: none;
+
+}
+.btn-detail {
+  background: #111;
+  color: #fff;
+  border: 1;
+
 }
 .btn-add {
   background: #111;
   color: #fff;
+/* <<<<<<< HEAD
   border: none;
+======= */
+  border: 1;
+
 }
 </style>

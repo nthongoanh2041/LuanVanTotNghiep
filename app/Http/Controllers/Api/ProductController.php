@@ -40,7 +40,7 @@ class ProductController extends Controller
         'category_id' => 'required|exists:categories,id',
         'scent_id' => 'required|exists:scents,id',
         'manufacturer_id' => 'required|exists:manufacturers,id',
-        'price' => 'required|numeric|between:0,999999.99',
+        'price' => 'required|numeric|min:0',
         'quantity'=>'required|numeric',
         'description' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -91,14 +91,72 @@ class ProductController extends Controller
      */
     public function showP($id)
     {
-        return response()->json(Product::findOrFail($id));
+
+         // Lấy sản phẩm kèm thông tin danh mục và mùi hương
+    $product = Product::with(['category', 'scent'])->find($id);
+
+    if (!$product) {
+        return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
+    }
+
+    // Trả về full URL cho ảnh (nếu có)
+    if ($product->image) {
+        $product->image = asset($product->image);
+    }
+
+    return response()->json($product);
+
     }
 
 
     public function updateP(Request $request, $id)
-    {
 
+
+{
+    $product = Product::findOrFail($id);
+
+    // Validate các field cơ bản
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:100',
+        'category_id' => 'required|exists:categories,id',
+        'scent_id' => 'required|exists:scents,id',
+        'manufacturer_id' => 'required|exists:manufacturers,id',
+        'price' => 'required|numeric|min:0',
+        'quantity' => 'required|integer|min:0',
+        'description' => 'nullable|string',
+        // ❌ KHÔNG ép validate image nếu không upload file
+        'image' => 'nullable',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    $data = $validator->validated();
+
+    // 🖼 Nếu có file ảnh mới upload thì xử lý
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '-' . $image->getClientOriginalName();
+        $image->move(public_path('image/'), $imageName);
+        $data['image'] = 'image/' . $imageName;
+    }
+
+    // 🧹 Nếu không upload ảnh mới, thì giữ ảnh cũ
+    else {
+        unset($data['image']);
+    }
+
+    $product->update($data);
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Cập nhật sản phẩm thành công',
+        'data' => $product
+    ]);
+}
+
+
     /**
      * Remove the specified resource from storage.
      */

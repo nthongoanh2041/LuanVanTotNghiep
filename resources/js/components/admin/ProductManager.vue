@@ -49,7 +49,11 @@
 
                 <div class="product-actions">
                   <button @click="deleteProduct(product.id)" class="btn btn-outline-danger btn-sm">Xóa</button>
+<!-- <<<<<<< HEAD
                   <router-link :to="'/admin/product/' + product.id + '/edit'" class="btn btn-outline-primary btn-sm">
+======= -->
+                  <router-link :to="'/admin/products/' + product.id + '/edit'" class="btn btn-outline-primary btn-sm">
+
                     Sửa
                   </router-link>
                 </div>
@@ -105,7 +109,11 @@ export default {
       scents: {},
       loading: false,
       currentPage: 1,
-      pageSize: 5,
+// <<<<<<< HEAD
+//       pageSize: 5,
+// =======
+      pageSize: 6,
+
     };
   },
   computed: {
@@ -238,6 +246,7 @@ export default {
   padding: 20px 40px;
   min-height: calc(100vh - 80px);
   background-color: #fafafa;
+
 }
 
 /* Danh sách sản phẩm */
@@ -246,11 +255,23 @@ export default {
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
+/* <<<<<<< HEAD
 }
 
 .product-list-items {
   list-style: none;
   padding: 0;
+======= */
+
+}
+
+.product-list-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* ✅ 2 cột */
+  gap: 20px; /* ✅ khoảng cách giữa các card */
+  list-style: none;
+  padding: 0;
+
 }
 
 .product-list-item {
@@ -274,10 +295,18 @@ export default {
   margin-right: 15px;
   border-radius: 8px;
   overflow: hidden;
+/* <<<<<<< HEAD
 }
 .product-img {
   width: 100%;
   height: 100%;
+======= */
+
+}
+.product-img {
+  width: 120%;
+  height: 120%;
+
   object-fit: cover;
 }
 
@@ -357,8 +386,13 @@ export default {
   padding: 6px 12px;
   font-size: 14px;
   cursor: pointer;
+/* <<<<<<< HEAD
   color: #007bff;
   border: 1px solid #007bff;
+======= */
+  color: #000000;
+  border: 1px solid #000000;
+
   border-radius: 4px;
 }
 

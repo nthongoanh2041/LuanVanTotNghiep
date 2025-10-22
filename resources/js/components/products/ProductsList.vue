@@ -1,6 +1,10 @@
 <template>
   <div class="product-list">
+<!-- <<<<<<< HEAD
     <h2 class="section-title">Sản phẩm nổi bật</h2>
+======= -->
+    <h2 class="section-title">Sản phẩm </h2>
+
 
     <div v-if="products.length > 0" class="card-container">
       <div
@@ -18,7 +22,9 @@
 
         <div class="btn-group">
           <router-link
-            :to="'/products/' + product.id"
+
+            :to="'/products/' + product.id +'/show'"
+
             class="btn btn-outline-secondary btn-sm"
           >
             Chi tiết
@@ -61,7 +67,11 @@ export default {
 
 <style scoped>
 .product-list {
+/* <<<<<<< HEAD
   padding: 20px;
+======= */
+  padding: 200px;
+
 }
 
 .section-title {
@@ -73,8 +83,13 @@ export default {
 /* GRID CHUẨN NGANG */
 .card-container {
   display: grid;
+/* <<<<<<< HEAD
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
+======= */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));       /*chỉnh số sản phẩm 1 dòng */
+  gap: 30px;
+
 }
 
 /* CARD */
@@ -93,8 +108,10 @@ export default {
 }
 
 .product-card img {
-  width: 100%;
-  height: 220px; /* hoặc auto-fit chiều cao khung, tuỳ bạn muốn cố định hay linh hoạt */
+
+  width: 80%;
+  height: 250px; /* hoặc auto-fit chiều cao khung, tuỳ bạn muốn cố định hay linh hoạt */
+
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 12px;
@@ -106,7 +123,11 @@ export default {
 }
 
 .product-price {
+/* <<<<<<< HEAD
   color: #666;
+======= */
+  color: #030303;
+
   margin-bottom: 12px;
 }
 

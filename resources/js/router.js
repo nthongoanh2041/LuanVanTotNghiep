@@ -9,6 +9,14 @@ import ProductByScent from '@/components/products/ProductByScent.vue';
 import DashboardAdmin from './components/admin/DashboardAdmin.vue'
 import ProductManager from './components/admin/ProductManager.vue'
 
+import ProductForm from './components/admin/ProductForm.vue';
+import ProductEdit from './components/admin/ProductEdit.vue'
+import CategorieManager from './components/admin/CategorieManager.vue'
+import CategorieForm from './components/admin/CategorieForm.vue';
+import CategorieEdit from './components/admin/CategorieEdit.vue'
+import ProductDetail from '@/components/products/ProductDetail.vue';
+
+
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
   { path: '/register', component: Register }, // ✅ Trang đăng ký
@@ -27,6 +35,33 @@ const routes = [
   props: true,
 },
 
+
+{
+  path: "/admin/product-form",
+  name: 'ProductForm',
+  component: ProductForm,
+  props: true,
+},
+{
+  path: "/admin/categorie-list",
+  name: 'CategorieManager',
+  component: CategorieManager,
+  props: true,
+},
+{
+  path: "/admin/categorie-form",
+  name: 'CategorieForm',
+  component: CategorieForm,
+  props: true,
+},
+{
+    path: '/admin/categorie/:id/edit',
+    name: 'CategorieEdit',
+    component: CategorieEdit,
+    props: true,
+  },
+
+
   {
     path: '/admin/dashboard',
     component: DashboardAdmin,
@@ -34,9 +69,26 @@ const routes = [
   },
   {
     path: '/admin/product-manager',
-    component: ProductManager,
+// <<<<<<< HEAD
+//     component: ProductManager,
+//     meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+//   },
+// =======
+    component: ProductManager, // tên file
     meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
   },
+  {
+  path: '/admin/products/:id/edit',
+ component: ProductEdit,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+  {
+  path: '/products/:id/show',
+  component: ProductDetail,
+}
+
+
+
 
 
 ]

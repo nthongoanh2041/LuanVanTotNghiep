@@ -14,11 +14,19 @@
       <router-link to="/admin/product-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Sản phẩm
       </router-link>
+<!-- <<<<<<< HEAD
       <router-link to="/admin/manufacturers" class="sidebar-link">
         <i class="fas fa-file-invoice"></i> Quản lý Nhà Sản Xuất
       </router-link>
       <router-link to="/admin/category" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Nhóm Hàng
+======= -->
+      <router-link to="/admin/manufacturers" class="sidebar-link"> <!-- giống đường dẫn ở router -->
+        <i class="fas fa-file-invoice"></i> Quản lý Nhà Sản Xuất
+      </router-link>
+      <router-link to="/admin/categorie-list" class="sidebar-link">
+        <i class="fas fa-box"></i> Quản lý Loại Sản Phẩm
+
       </router-link>
       <router-link to="/admin/scent" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Mùi Hương
@@ -26,6 +34,11 @@
        <router-link to="/admin/orders" class="sidebar-link">
         <i class="fas fa-file-invoice"></i> Quản lý Đơn hàng
       </router-link>
+
+      <router-link to="" class="sidebar-link">
+        <i class="fas fa-user"></i> Khách hàng thường xuyên
+      </router-link>
+
 
 
     </div>

@@ -95,6 +95,7 @@ const getFullImageUrl = (imagePath) => {
 .page { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
 .page-title { margin-bottom: 16px; }
 
+
 .product-list { display: flex; flex-direction: column; gap: 16px; }
 
 /* mỗi item dạng list */
@@ -103,19 +104,29 @@ const getFullImageUrl = (imagePath) => {
   gap: 16px;
   padding: 12px;
   border: 1px solid #eee;
+.product-list { display: grid; grid-template-columns: repeat(2, 1fr); flex-direction: column; gap: 20px; }
+}
+
+/* mỗi item dạng list */
+.product-item {
+  display: inline-block;
+  gap: 16px;
+  padding: 20px;
+  border: 2px solid #eee;
   border-radius: 8px;
   align-items: center;
 }
 
 .product-image {
-  width: 120px;
-height: 120px;
+  width: 300px;
+  height: 350px;
   object-fit: cover;
   border-radius: 8px;
   background: #fafafa;
 }
 
-.product-info { flex: 1; }
+
+/* .product-info { flex: 1; }
 
 .product-name { margin: 0 0 6px; font-size: 18px; }
 .product-price { margin: 0 0 8px; font-weight: 700; color: #111; }
@@ -140,6 +151,33 @@ height: 120px;
 .btn-add {
   background: #111;
   color: #fff;
-  border: none;
+  border: none; */
+
+/* .product-info { flex: 1; } */
+
+.product-name { margin: 0 0 6px; font-size: 18px; }
+.product-price { margin: 0 0 8px; font-weight: 700; color: #111; }
+/* .product-desc { margin: 0 0 12px; color: #666; font-size: 14px; } */
+
+.product-actions { display: flex; gap: 10px; }    /* khoảng cách giữa btn và btn detail*/
+
+.btn {
+  padding: 10px 10px;
+  border-radius: 80px;
+  font-weight: 600;
+  text-decoration: none;
+
+}
+
+.btn-detail {
+  background: #111;
+  color: #fff;
+  border: 1;
+}
+.btn-add {
+  background: #111;
+  color: #fff;
+  border: 1;
+
 }
 </style>
