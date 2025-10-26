@@ -9,7 +9,9 @@
       <div class="main-content">
         <h2 class="section-title">Thêm loại sản phẩm mới</h2>
 
-        <form @submit.prevent="addCategory" class="form-container">
+        <form @submit.prevent="addCategory" class="form-container" enctype="multipart/form-data">
+
+          <!-- Tên loại sản phẩm -->
           <div class="form-group">
             <label for="name">Tên loại sản phẩm</label>
             <input
@@ -22,6 +24,7 @@
             />
           </div>
 
+          <!-- Mô tả -->
           <div class="form-group">
             <label for="description">Mô tả</label>
             <textarea
@@ -32,11 +35,30 @@
               rows="4"
             ></textarea>
           </div>
+          <!-- Ảnh -->
+          <div class="form-group">
+            <label for="image">Ảnh loại sản phẩm</label>
+            <input
+              type="file"
+              id="image"
+              class="form-control"
+              accept="image/*"
+              @change="handleImageUpload"
+            />
 
+            <!-- Preview ảnh -->
+            <div v-if="previewImage" class="preview">
+              <p>Ảnh xem trước:</p>
+              <img :src="previewImage" alt="Preview" class="preview-img" />
+            </div>
+          </div>
+
+
+          <!-- Nút hành động -->
           <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Lưu</button>
+            <button type="submit" class="btn btn-primary"> Lưu</button>
             <router-link to="/admin/categories" class="btn btn-secondary">
-              Hủy
+              ⬅ Hủy
             </router-link>
           </div>
         </form>
@@ -59,18 +81,40 @@ export default {
       form: {
         name: "",
         description: "",
+        image: null,
       },
+      previewImage: null,
     };
   },
   methods: {
+    // 🖼️ Khi người dùng chọn ảnh
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.form.image = file;
+        this.previewImage = URL.createObjectURL(file);
+      }
+    },
+
+    // 🟢 Gửi dữ liệu lên server
     async addCategory() {
       try {
-        const response = await axios.post(`${this.baseURL}/api/store`, this.form);
-        alert("Thêm loại sản phẩm thành công!");
+        const formData = new FormData();
+        formData.append("name", this.form.name);
+        formData.append("description", this.form.description);
+        if (this.form.image) {
+          formData.append("image", this.form.image);
+        }
+
+        await axios.post(`${this.baseURL}/api/store`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        alert("✅ Thêm loại sản phẩm thành công!");
         this.$router.push("/admin/categorie-list");
       } catch (error) {
-        console.error("Lỗi khi thêm loại sản phẩm:", error);
-        alert("Không thể thêm loại sản phẩm. Vui lòng kiểm tra lại!");
+        console.error("Lỗi khi thêm loại sản phẩm:", error.response?.data || error);
+        alert("❌ Không thể thêm loại sản phẩm. Vui lòng kiểm tra lại!");
       }
     },
   },
@@ -78,6 +122,19 @@ export default {
 </script>
 
 <style scoped>
+.preview {
+  margin-top: 10px;
+}
+
+.preview-img {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+}
+
+/* Giữ nguyên phần CSS cũ của bạn */
 .header {
   position: fixed;
   top: 0;

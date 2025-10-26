@@ -1,20 +1,22 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+  <div class="min-h-screen bg-gray-50">
     <Header />
 
     <div class="container mx-auto py-12 px-6">
-      <div v-if="loading" class="text-center text-gray-500 text-lg">Đang tải dữ liệu...</div>
+      <div v-if="loading" class="text-center text-gray-500 text-lg">
+        Đang tải dữ liệu...
+      </div>
 
       <div
         v-else
         class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-2xl shadow-2xl p-10 border border-gray-200"
       >
         <!-- Hình ảnh sản phẩm -->
-        <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center h-[500px]">
           <img
-            :src="product.image"
-            alt="Product Image"
-            class="rounded-2xl shadow-md max-h-[500px] w-full object-contain bg-gray-50 p-4"
+            :src="product.image || '/no-image.png'"
+            :alt="product.name"
+            class="rounded-2xl shadow-md max-h-full w-auto object-contain bg-gray-50 p-4"
           />
         </div>
 
@@ -32,11 +34,10 @@
             <div class="space-y-2 text-gray-700">
               <p><strong>Loại sản phẩm:</strong> {{ product.category?.name || "Không có dữ liệu" }}</p>
               <p><strong>Mùi hương:</strong> {{ product.scent?.name || "Không có dữ liệu" }}</p>
-              <p><strong> Số lượng còn lại:</strong> {{ product.quantity }}</p>
+              <p><strong>Số lượng còn lại:</strong> {{ product.quantity }}</p>
             </div>
           </div>
 
-          <!-- Nút thêm vào giỏ hàng -->
           <div class="mt-8 flex gap-4">
             <button
               class="flex-1 bg-blue-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
@@ -68,7 +69,6 @@ export default {
   components: { Header, Footer },
   data() {
     return {
-      baseURL: "http://localhost:8000",
       product: {},
       loading: true,
     };
@@ -80,18 +80,13 @@ export default {
     async fetchProduct() {
       const id = this.$route.params.id;
       try {
-        const res = await axios.get(`${this.baseURL}/api/showP/${id}`);
-        const p = res.data;
-
-        // Chuẩn hoá đường dẫn ảnh
-        let imagePath = p.image ? p.image.replace(/[\r\n\s]+/g, "").trim() : null;
-        if (imagePath && !imagePath.startsWith("http")) {
-          imagePath = `${this.baseURL}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
-        }
-        this.product = { ...p, image: imagePath || "/no-image.png" };
+        const res = await axios.get(`http://localhost:8000/api/showP/${id}`);
+        // image từ backend đã là URL hợp lệ (public/image)
+        this.product = res.data;
       } catch (err) {
         console.error("Lỗi khi tải chi tiết sản phẩm:", err);
         alert("Không thể tải chi tiết sản phẩm!");
+        this.product = { image: "/no-image.png" }; // fallback
       } finally {
         this.loading = false;
       }

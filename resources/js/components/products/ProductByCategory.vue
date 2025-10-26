@@ -104,9 +104,9 @@ const getFullImageUrl = (imagePath) => {
   gap: 16px;
   padding: 12px;
   border: 1px solid #eee;
-.product-list { display: grid; grid-template-columns: repeat(2, 1fr); flex-direction: column; gap: 20px; }
-}
 
+}
+.product-list { display: grid; grid-template-columns: repeat(3, 1fr); flex-direction: column; gap: 20px; }
 /* mỗi item dạng list */
 .product-item {
   display: inline-block;
@@ -115,6 +115,7 @@ const getFullImageUrl = (imagePath) => {
   border: 2px solid #eee;
   border-radius: 8px;
   align-items: center;
+  /* grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); */
 }
 
 .product-image {

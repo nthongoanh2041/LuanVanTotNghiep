@@ -24,7 +24,10 @@
             >
               <router-link :to="'/product/' + product.id" class="product-link">
                 <div class="product-frame">
-                  <img :src="product.imageUrl" :alt="product.name" class="product-img" />
+                <div v-if="!product.imageUrl" class="text-red-500">Không có hình</div>
+                <img v-else :src="product.imageUrl" class="product-img" alt="Product Image" />
+
+
                 </div>
               </router-link>
 
@@ -49,9 +52,6 @@
 
                 <div class="product-actions">
                   <button @click="deleteProduct(product.id)" class="btn btn-outline-danger btn-sm">Xóa</button>
-<!-- <<<<<<< HEAD
-                  <router-link :to="'/admin/product/' + product.id + '/edit'" class="btn btn-outline-primary btn-sm">
-======= -->
                   <router-link :to="'/admin/products/' + product.id + '/edit'" class="btn btn-outline-primary btn-sm">
 
                     Sửa
@@ -109,9 +109,6 @@ export default {
       scents: {},
       loading: false,
       currentPage: 1,
-// <<<<<<< HEAD
-//       pageSize: 5,
-// =======
       pageSize: 6,
 
     };
@@ -139,11 +136,20 @@ export default {
       this.loading = true;
       try {
         const response = await axios.get(`${this.baseURL}/api/indexP`);
-        this.products = response.data.map((p) => ({
-          ...p,
-         imageUrl: p.image.startsWith('http') ? p.image : `${this.baseURL}/${p.image}`,
+ this.products = response.data.map((p) => {
+  let imageUrl = '';
+  if (p.image) {
+    const clean = p.image.replace(/\r?\n|\r/g, '').trim(); // loại bỏ cả \r\n
+    if (clean.startsWith('http')) {
+      imageUrl = clean;
+    } else {
+      imageUrl = `${this.baseURL}/${clean.replace(/^\/+/, '')}`;
+    }
+  }
+  console.log('✅ imageUrl:', imageUrl);
+  return { ...p, imageUrl };
+});
 
-        }));
 
         const manufacturerIds = [...new Set(this.products.map(p => p.manufacturer_id).filter(Boolean))];
         const scentIds = [...new Set(this.products.map(p => p.scent_id).filter(Boolean))];
@@ -255,13 +261,6 @@ export default {
   font-weight: 700;
   margin-bottom: 20px;
   color: #333;
-/* <<<<<<< HEAD
-}
-
-.product-list-items {
-  list-style: none;
-  padding: 0;
-======= */
 
 }
 
@@ -290,17 +289,11 @@ export default {
 }
 
 .product-frame {
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   margin-right: 15px;
   border-radius: 8px;
   overflow: hidden;
-/* <<<<<<< HEAD
-}
-.product-img {
-  width: 100%;
-  height: 100%;
-======= */
 
 }
 .product-img {
@@ -310,9 +303,7 @@ export default {
   object-fit: cover;
 }
 
-/* .product-details {
-  flex: 1;
-} */
+
 
 .product-name {
   font-size: 16px;
@@ -342,7 +333,7 @@ export default {
 }
 
 .btn {
-  padding: 6px 12px;
+  padding: 12px 24px;
   font-size: 14px;
   cursor: pointer;
 }
@@ -386,10 +377,6 @@ export default {
   padding: 6px 12px;
   font-size: 14px;
   cursor: pointer;
-/* <<<<<<< HEAD
-  color: #007bff;
-  border: 1px solid #007bff;
-======= */
   color: #000000;
   border: 1px solid #000000;
 

@@ -13,12 +13,8 @@
       <div class="dropdown-wrapper"
      @mouseenter="openScentMenu"
      @mouseleave="closeScentMenu">
-  <span class="nav-item">Mùi hương</span>
-  <ul v-if="showScentDropdown" class="dropdown">
-    <li v-for="s in scents" :key="s.id" @click="goToScent(s.id)">
-      {{ s.name }}
-    </li>
-  </ul>
+  <!-- <span class="nav-item">Mùi hương</span> -->
+  <router-link to="/scents" class="nav-item">Danh mục Mùi hương</router-link>
 </div>
 
         <!-- Sản phẩm (dropdown) -->
@@ -26,12 +22,8 @@
 <div class="dropdown-wrapper"
      @mouseenter="openCategoryMenu"
      @mouseleave="closeCategoryMenu">
-  <span class="nav-item">Sản phẩm</span>
-  <ul v-if="showCategoryDropdown" class="dropdown">
-    <li v-for="cat in categories" :key="cat.id" @click="goToCategory(cat.id)">
-      {{ cat.name }}
-    </li>
-  </ul>
+  <!-- <span class="nav-item">Sản phẩm</span> -->
+  <router-link to="/products" class="nav-item">Danh mục Sản phẩm</router-link>
 </div>
 
         <router-link to="/about">Giới thiệu</router-link>

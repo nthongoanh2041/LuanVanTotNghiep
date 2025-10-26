@@ -13,34 +13,6 @@
 
 
 
-    <!-- Tìm kiếm và Lọc sản phẩm -->
-    <div class="search-filter">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <input
-              type="text"
-              v-model="searchQuery"
-              @input="fetchFeaturedProducts"
-              placeholder="Tìm kiếm sản phẩm..."
-              class="form-control"
-            />
-          </div>
-          <div class="col-md-6">
-            <select v-model="selectedCategory" @change="fetchFeaturedProducts" class="form-control">
-              <option value="">Loại sản phẩm</option>
-              <option
-                v-for="category in categories"
-                :key="category.id"
-                :value="category.id"
-              >
-                {{ category.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Sản phẩm nổi bật -->
     <ProductsList

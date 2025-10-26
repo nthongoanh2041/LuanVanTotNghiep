@@ -1,8 +1,6 @@
 <template>
   <div class="product-list">
-<!-- <<<<<<< HEAD
-    <h2 class="section-title">Sản phẩm nổi bật</h2>
-======= -->
+
     <h2 class="section-title">Sản phẩm </h2>
 
 
@@ -67,9 +65,7 @@ export default {
 
 <style scoped>
 .product-list {
-/* <<<<<<< HEAD
-  padding: 20px;
-======= */
+
   padding: 200px;
 
 }
@@ -83,11 +79,7 @@ export default {
 /* GRID CHUẨN NGANG */
 .card-container {
   display: grid;
-/* <<<<<<< HEAD
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
-======= */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));       /*chỉnh số sản phẩm 1 dòng */
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));       /*chỉnh số sản phẩm 1 dòng */
   gap: 30px;
 
 }
@@ -123,9 +115,7 @@ export default {
 }
 
 .product-price {
-/* <<<<<<< HEAD
-  color: #666;
-======= */
+
   color: #030303;
 
   margin-bottom: 12px;

@@ -15,7 +15,9 @@ import CategorieManager from './components/admin/CategorieManager.vue'
 import CategorieForm from './components/admin/CategorieForm.vue';
 import CategorieEdit from './components/admin/CategorieEdit.vue'
 import ProductDetail from '@/components/products/ProductDetail.vue';
-
+import CategorieProduct from '@/components/admin/CategorieProduct.vue';
+import AllCategory from '@/components/products/AllCategory.vue';
+import Category_Product from '@/components/products/Category_Product.vue';
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
@@ -55,11 +57,30 @@ const routes = [
   props: true,
 },
 {
-    path: '/admin/categorie/:id/edit',
+    path: '/admin/categorie/:id/products',
+    name: 'CategorieProduct',
+    component: CategorieProduct,
+    props: true,
+  },
+{
+     path: '/admin/categorie/:id/edit',
     name: 'CategorieEdit',
     component: CategorieEdit,
     props: true,
-  },
+},
+/////////
+{
+     path: '/products',
+    name: 'AllCategory',
+    component: AllCategory,
+    props: true,
+},
+{
+     path: '/category/:id',
+    name: 'Category_Product',
+    component: Category_Product,
+    props: true,
+},
 
 
   {
@@ -69,11 +90,7 @@ const routes = [
   },
   {
     path: '/admin/product-manager',
-// <<<<<<< HEAD
-//     component: ProductManager,
-//     meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
-//   },
-// =======
+
     component: ProductManager, // tên file
     meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
   },

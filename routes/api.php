@@ -8,39 +8,6 @@ use App\Http\Controllers\Api\ManufacturerController;
 use App\Http\Controllers\Api\ProductController;
 
 
-// <<<<<<< HEAD
-// Route::post('/register', [AuthController::class, 'register']);
-// Route::post('/login', [AuthController::class, 'login']);
-
-
-
-// Route::post('/store', [CategoryController::class, 'store']);
-// Route::get('/index', [CategoryController::class, 'index']);
-// Route::get('/show/{id}', [CategoryController::class, 'show']);
-// Route::put('/update/{id}', [CategoryController::class, 'update']);
-// Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);
-
-
-
-// Route::post('/storeS', [ScentController::class, 'storeS']);
-// Route::get('/indexS', [ScentController::class, 'indexS']);
-// Route::get('/showS/{id}', [ScentController::class, 'showS']);
-// Route::put('/updateS/{id}', [ScentController::class, 'updateS']);
-// Route::delete('/destroyS/{id}', [ScentController::class, 'destroyS']);
-
-
-// Route::post('/storeM', [ManufacturerController::class, 'storeM']);
-// Route::get('/indexM', [ManufacturerController::class, 'indexM']);
-// Route::get('/showM/{id}', [ManufacturerController::class, 'showM']);
-// Route::put('/updateM/{id}', [ManufacturerController::class, 'updateM']);
-// Route::delete('/destroyM/{id}', [ManufacturerController::class, 'destroyM']);
-
-// Route::post('/storeP', [ProductController::class, 'storeP']);
-// Route::get('/indexP', [ProductController::class, 'indexP']);
-
-// Route::get('category/products/{id}', [ProductController::class ,'getProductsByCategory']);
-// Route::get('scent/products/{id}', [ProductController::class ,'getProductsByScent']);
-// =======
 Route::post('/register', [AuthController::class, 'register']);                          /*api đăng ký*/
 Route::post('/login', [AuthController::class, 'login']);                                /*api đăng nhập*/
 
@@ -51,6 +18,7 @@ Route::get('/index', [CategoryController::class, 'index']);                     
 Route::get('/show/{id}', [CategoryController::class, 'show']);                          /*hiển thị loại sp theo id*/
 Route::put('/update/{id}', [CategoryController::class, 'update']);                      /*sửa loại sp*/
 Route::delete('/destroy/{id}', [CategoryController::class, 'destroy']);                 /*xóa loại sp*/
+
 
 
 /*Scent*/
@@ -77,4 +45,4 @@ Route::get('/showP/{id}', [ProductController::class, 'showP']);
 
 Route::get('category/products/{id}', [ProductController::class ,'getProductsByCategory']);              /*hiển thị sản phẩm theo loại sp*/
 Route::get('scent/products/{id}', [ProductController::class ,'getProductsByScent']);                    /*hiển thị sản phẩm theo mùi hương*/
-
+// Route::get('category/products/{id}', [ProductController::class ,'getProductsByCategory']);

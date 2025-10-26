@@ -9,6 +9,7 @@ use App\Models\Scent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Prompts\Prompt;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -16,12 +17,19 @@ class ProductController extends Controller
      * Display a listing of the resource.
      */
     public function indexP()
-    {
-       $products = Product::all()->map(function ($product) {
-        // Nếu image tồn tại thì tạo full URL
+    {$products = Product::all()->map(function ($product) {
         if ($product->image) {
-            $product->image = asset($product->image);
+            // Xóa khoảng trắng hoặc ký tự xuống dòng dư
+            $cleanImage = trim($product->image);
+
+            // Nếu image chưa có domain thì thêm asset()
+            if (!str_starts_with($cleanImage, 'http')) {
+                $cleanImage = asset($cleanImage);
+            }
+
+            $product->image = $cleanImage;
         }
+
         return $product;
     });
 
@@ -66,12 +74,11 @@ class ProductController extends Controller
     $product->description = $request->description ?? '';
 
     // Upload ảnh (nếu có)
-    if ($request->hasFile('image')) {
-    $image = $request->file('image');
-    $imageName = time() . '-' . $image->getClientOriginalName();
-    $image->move(public_path('image/'), $imageName);
-    $product->image = 'image/' . $imageName;
-} elseif ($request->filled('image')) {
+if ($request->hasFile('image')) {
+    $path = $request->file('image')->store('images', 'public');
+    $product->image = 'storage/' . $path;
+}
+elseif ($request->filled('image')) {
     // Nếu chỉ gửi link ảnh có sẵn
     $product->image = $request->image;
 }
@@ -89,26 +96,31 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showP($id)
-    {
-
-         // Lấy sản phẩm kèm thông tin danh mục và mùi hương
+ public function showP($id)
+{
+    // Lấy sản phẩm kèm category và scent
     $product = Product::with(['category', 'scent'])->find($id);
 
     if (!$product) {
         return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
     }
 
-    // Trả về full URL cho ảnh (nếu có)
+    // Xử lý ảnh
     if ($product->image) {
-        $product->image = asset($product->image);
+        $cleanImage = trim($product->image);
+
+        // Nếu chưa là URL tuyệt đối, thêm url() trỏ vào thư mục public/image
+        if (!str_starts_with($cleanImage, 'http')) {
+            $product->image = url('image/' . basename($cleanImage));
+        } else {
+            $product->image = $cleanImage;
+        }
+    } else {
+        $product->image = null;
     }
 
     return response()->json($product);
-
-    }
-
-
+}
     public function updateP(Request $request, $id)
 
 

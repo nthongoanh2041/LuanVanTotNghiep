@@ -110,76 +110,23 @@ const addToCart = (id) => {
   padding: 0 16px;
 }
 .product-list {
-/* <<<<<<< HEAD
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.product-item {
-  display: flex;
-  gap: 16px;
-  padding: 12px;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  align-items: center;
-  background: #fff;
-}
-.product-image {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-.product-info {
-  flex: 1;
-}
-.product-name {
-  margin: 0 0 6px;
-  font-size: 18px;
-  font-weight: 600;
-}
-.product-price {
-  margin: 0 0 8px;
-  font-weight: 700;
-  color: #111;
-}
-.product-desc {
-  margin: 0 0 12px;
-  color: #666;
-  font-size: 14px;
-}
-.product-actions {
-  display: flex;
-  gap: 10px;
-}
-.btn {
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-}
-.btn-detail {
-  background: transparent;
-  border: 1px solid #111;
-  color: #111;
-======= */
     display: grid;
-     grid-template-columns: repeat(3, 1fr);
+     grid-template-columns: repeat(2, 1fr);
      flex-direction: column; gap: 10px; }
 
 /* mỗi item dạng list */
 .product-item {
-  display: inline-block;
+  display: inline;
   gap: 10px;
   padding: 20px;
   border: 2px solid #eee;
   border-radius: 8px;
   align-items: center;
+  overflow: hidden;
 }
 .product-image {
-  width: 300px;
-  height: 350px;
+  width: 250px;
+  height: 300px;
   object-fit: cover;
   border-radius: 8px;
   background: #fafafa;
@@ -216,9 +163,6 @@ const addToCart = (id) => {
 .btn-add {
   background: #111;
   color: #fff;
-/* <<<<<<< HEAD
-  border: none;
-======= */
   border: 1;
 
 }

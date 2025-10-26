@@ -8,41 +8,99 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()//để lấy toàn bộ ds- phương thức get
+    // 🟢 Lấy danh sách tất cả category
+    public function index()
     {
-        return response()->json(Category::all());
-    }
+       $categories = Category::all()->map(function ($category) {
+        if ($category->image) {
+            $category->image = asset($category->image);
+        }
+        return $category;
+    });
 
-    public function store(Request $request)// để thêm -phương thức post
-    {
-        $request->validate(['name' => 'required|string|max:255']);
-        $request->validate(['description' => '|string|max:255']);
-        $category = Category::create($request->all());
-        return response()->json($category, 201);
-    }
+    return response()->json($categories, 200);
+}
 
-    public function show($id)// để xem chi tiết theo id - get
-    {
-        return response()->json(Category::findOrFail($id));
-    }
-
-    public function update(Request $request, $id)// để sửa loại sp theo id - put
+    // 🟢 Thêm mới category
+   public function store(Request $request)
 {
-    // Tìm category theo id
-    $category = Category::find($id);
+    // Validate dữ liệu đầu vào
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-    // Nếu không tìm thấy thì trả lỗi 404
+    // Xử lý upload ảnh
+    if ($request->hasFile('image')) {
+        // Lưu ảnh vào storage/app/public/categories
+        $path = $request->file('image')->store('categories', 'public');
+
+        // Lưu đường dẫn public để truy cập qua trình duyệt
+       $validatedData['image'] = asset('storage/' . $path);
+
+    } elseif ($request->filled('image')) {
+        // Nếu chỉ gửi link ảnh có sẵn
+        $validatedData['image'] = $request->image;
+    }
+
+    // Tạo category
+    $category = Category::create($validatedData);
+
+    return response()->json([
+        'message' => 'Category created successfully',
+        'data' => $category,
+    ], 201);
+}
+    // 🟢 Hiển thị chi tiết 1 category theo ID
+    public function show($id)
+    {
+        $category = Category::find($id);
+
     if (!$category) {
         return response()->json(['message' => 'Category not found'], 404);
     }
 
-    // Validate dữ liệu (tuỳ cột trong bảng của bạn)
+    // Nếu có ảnh, thêm full URL để Vue hiển thị đúng
+    if ($category->image) {
+        $category->image = asset($category->image);
+    }
+
+    return response()->json($category, 200);
+    }
+
+    // 🟢 Cập nhật category theo ID
+  public function update(Request $request, $id)
+{
+    $category = Category::find($id);
+
+    if (!$category) {
+        return response()->json(['message' => 'Category not found'], 404);
+    }
+
     $validatedData = $request->validate([
         'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
+        'description' => 'nullable|string|max:255',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'old_image' => 'nullable|string',
     ]);
 
-    // Cập nhật thông tin
+    // 🟢 Nếu có upload ảnh mới
+    if ($request->hasFile('image')) {
+        if ($category->image) {
+            $oldImagePath = str_replace(asset('storage/'), '', $category->image);
+            if (file_exists(storage_path('app/public/' . $oldImagePath))) {
+                unlink(storage_path('app/public/' . $oldImagePath));
+            }
+        }
+        $path = $request->file('image')->store('categories', 'public');
+        $validatedData['image'] = asset('storage/' . $path);
+    }
+    // 🟢 Nếu không có ảnh mới thì giữ lại ảnh cũ
+    elseif ($request->filled('old_image')) {
+        $validatedData['image'] = $request->old_image;
+    }
+
     $category->update($validatedData);
 
     return response()->json([
@@ -51,17 +109,23 @@ class CategoryController extends Controller
     ], 200);
 }
 
-public function destroy($id)/// xóa theo id - delete
-{
-    $category = Category::find($id);
 
-    if (!$category) {
-        return response()->json(['message' => 'Category not found'], 404);
+    // 🟢 Xóa category theo ID
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        // Xóa ảnh nếu có
+        if ($category->image && file_exists(public_path($category->image))) {
+            unlink(public_path($category->image));
+        }
+
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully'], 200);
     }
-
-    $category->delete();
-
-    return response()->json(['message' => 'Category deleted successfully'], 200);
-}
-
 }
