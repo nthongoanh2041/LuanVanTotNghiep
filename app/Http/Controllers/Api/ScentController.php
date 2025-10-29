@@ -79,5 +79,40 @@ public function getProductsByScent($id)
         'products' => $scent->products
     ]);
 }
+// 🟢 Lấy chi tiết mùi hương theo id
+    public function show($id)
+    {
+        $scent = Scent::find($id);
+        if (!$scent) {
+            return response()->json(['message' => 'Không tìm thấy mùi hương'], 404);
+        }
+
+        // if ($scent->image) {
+        //     $scent->image = asset('storage/' . $scent->image);
+        // }
+
+        return response()->json($scent, 200);
+    }
+
+    // 🟢 Lấy tất cả sản phẩm thuộc mùi hương này
+    public function products($id)
+    {
+        $scent = Scent::find($id);
+        if (!$scent) {
+            return response()->json(['message' => 'Không tìm thấy mùi hương'], 404);
+        }
+
+        $products = $scent->products()->get()->map(function ($p) {
+            // if ($p->image) {
+            //     $p->image = asset('storage/' . $p->image);
+            // }
+            return $p;
+        });
+
+        return response()->json([
+            'scent_name' => $scent->name,
+            'products' => $products
+        ]);
+    }
 
 }

@@ -13,6 +13,6 @@ class Scent extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class,'scent_id');
+        return $this->hasMany(Product::class);
     }
 }

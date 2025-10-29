@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ScentController;
@@ -42,7 +43,20 @@ Route::put('/products/{id}', [ProductController::class, 'updateP']);
 // routes/api.php
 Route::get('/showP/{id}', [ProductController::class, 'showP']);
 
+/*Cart*/
+Route::post('/storeC', [CartController::class, 'storeC']);
+Route::get('/indexC/{user_id}', [CartController::class, 'indexC']);
+Route::put('/updateC/{id}', [CartController::class, 'updateC']);
+Route::delete('/destroyC/{id}', [CartController::class, 'destroyC']);
+Route::delete('/clearC', [CartController::class, 'clearC']);
+
+
 
 Route::get('category/products/{id}', [ProductController::class ,'getProductsByCategory']);              /*hiển thị sản phẩm theo loại sp*/
 Route::get('scent/products/{id}', [ProductController::class ,'getProductsByScent']);                    /*hiển thị sản phẩm theo mùi hương*/
 // Route::get('category/products/{id}', [ProductController::class ,'getProductsByCategory']);
+Route::get('/category/products/{id}', [CategoryController::class, 'products']);
+Route::get('/scent/products/{id}', [ScentController::class, 'products']);
+
+
+

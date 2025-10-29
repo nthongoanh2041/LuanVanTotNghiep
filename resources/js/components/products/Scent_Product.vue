@@ -1,15 +1,15 @@
 <template>
-  <div class="category-view">
+  <div class="scent-view">
     <Header />
 
     <div class="container">
-      <h2 class="title">Sản phẩm thuộc loại: {{ categoryName }}</h2>
+      <h2 class="title">Sản phẩm thuộc mùi hương: {{ scentName }}</h2>
 
       <div v-if="loading" class="loading">Đang tải sản phẩm...</div>
 
       <div v-else>
         <div v-if="products.length === 0" class="no-product">
-          Không có sản phẩm nào trong loại này.
+          Không có sản phẩm nào thuộc mùi hương này.
         </div>
 
         <div class="product-grid">
@@ -18,6 +18,7 @@
               :src="getFullImageUrl(p.image)"
               alt="Ảnh sản phẩm"
               class="product-img"
+              @error="onImageError"
             />
 
             <div class="product-info">
@@ -28,7 +29,6 @@
                 <router-link :to="`/products/${p.id}/show`" class="btn btn-detail">
                   Xem chi tiết
                 </router-link>
-
                 <button
                   @click="addToCart(p)"
                   class="btn btn-add"
@@ -47,16 +47,44 @@
 <script setup>
 import { ref, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
-import axios from "axios";
 import Header from "@/components/Header.vue";
+import axios from "axios";
 
-// --- Khai báo biến reactive ---
 const route = useRoute();
-const loading = ref(true);
 const products = ref([]);
-const categoryName = ref("");
+const scentName = ref("");
+const loading = ref(true);
+const defaultImage = "/images/no-image.png";
 
-// --- Hàm định dạng tiền tệ ---
+// Gọi API lấy sản phẩm theo mùi hương
+const fetchProductsByScent = async (scentId) => {
+  loading.value = true;
+  try {
+    const res = await axios.get(`http://localhost:8000/api/scent/products/${scentId}`);
+    products.value = res.data.products ?? res.data;
+    if (res.data.scent_name) scentName.value = res.data.scent_name;
+    else if (res.data.length && res.data[0]?.scent) scentName.value = res.data[0].scent.name;
+    else scentName.value = `Mùi hương #${scentId}`;
+  } catch (err) {
+    console.error("Lỗi khi tải sản phẩm theo mùi hương:", err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Gọi khi mount
+onMounted(() => {
+  fetchProductsByScent(route.params.id);
+});
+
+// Khi thay đổi ID mùi trong route
+watch(
+  () => route.params.id,
+  (newId) => {
+    fetchProductsByScent(newId);
+  }
+);
+
 const formatCurrency = (v) => {
   if (v == null) return "";
   return new Intl.NumberFormat("vi-VN", {
@@ -65,40 +93,15 @@ const formatCurrency = (v) => {
   }).format(v);
 };
 
-// --- Xử lý ảnh ---
 const getFullImageUrl = (path) => {
-  return path ? `http://localhost:8000/${path.replace(/^\/+/, "")}` : "/default.jpg";
+  if (!path) return defaultImage;
+  if (path.startsWith("http")) return path;
+  return `http://localhost:8000/${path.replace(/^\/+/, "")}`;
 };
 
-// --- Lấy sản phẩm theo category ---
-const fetchProductsByCategory = async (categoryId) => {
-  loading.value = true;
-  try {
-    const res = await axios.get(`http://localhost:8000/api/category/products/${categoryId}`);
-    products.value = res.data.products ?? res.data;
-    if (res.data.category_name) categoryName.value = res.data.category_name;
-    else if (res.data.length && res.data[0]?.category)
-      categoryName.value = res.data[0].category.name;
-    else categoryName.value = `Loại #${categoryId}`;
-  } catch (err) {
-    console.error("Lỗi khi tải sản phẩm:", err);
-  } finally {
-    loading.value = false;
-  }
+const onImageError = (e) => {
+  e.target.src = defaultImage;
 };
-
-// --- Khi component mount ---
-onMounted(() => {
-  fetchProductsByCategory(route.params.id);
-});
-
-// --- Theo dõi khi id category thay đổi ---
-watch(
-  () => route.params.id,
-  (newId) => {
-    fetchProductsByCategory(newId);
-  }
-);
 
 const addToCart = async (p) => {
   const userInfoStr = localStorage.getItem('user');
@@ -129,35 +132,41 @@ const addToCart = async (p) => {
 };
 
 
+
 </script>
 
 <style scoped>
-.category-view {
+.scent-view {
   font-family: "Inter", sans-serif;
   background-color: #fafafa;
   min-height: 100vh;
 }
+
 .container {
   max-width: 1200px;
   margin: 30px auto;
   padding: 0 20px;
 }
+
 .title {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 20px;
 }
+
 .loading,
 .no-product {
   text-align: center;
   font-size: 16px;
   margin-top: 40px;
 }
+
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
 }
+
 .product-card {
   background: #fff;
   border: 1px solid #eee;
@@ -166,34 +175,41 @@ const addToCart = async (p) => {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: 0.25s;
 }
+
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
+
 .product-img {
   width: 100%;
   height: 250px;
   object-fit: cover;
 }
+
 .product-info {
   padding: 12px;
   text-align: left;
 }
+
 .product-name {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 6px;
 }
+
 .product-price {
   color: #000000;
   font-weight: 600;
   margin-bottom: 10px;
 }
+
 .actions {
   display: flex;
   gap: 10px;
   justify-content: flex-start;
 }
+
 .btn {
   padding: 6px 10px;
   border: none;
@@ -202,14 +218,17 @@ const addToCart = async (p) => {
   font-weight: 500;
   transition: 0.25s;
 }
+
 .btn-detail {
   background: black;
   color: white;
 }
+
 .btn-add {
   background: #000000;
   color: white;
 }
+
 .btn:hover {
   opacity: 0.9;
 }

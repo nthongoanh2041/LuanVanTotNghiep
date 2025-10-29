@@ -14,7 +14,7 @@
      @mouseenter="openScentMenu"
      @mouseleave="closeScentMenu">
   <!-- <span class="nav-item">Mùi hương</span> -->
-  <router-link to="/scents" class="nav-item">Danh mục Mùi hương</router-link>
+  <router-link to="/product" class="nav-item">Danh mục Mùi hương</router-link>
 </div>
 
         <!-- Sản phẩm (dropdown) -->
@@ -36,7 +36,10 @@
           <span class="welcome-text">
             Xin chào, <strong>{{ user.name }}</strong>
           </span>
+          <!-- 🛒 Giỏ hàng -->
+        <router-link to="/cart" class="btn-cart">🛒</router-link>
           <button @click="logout" class="btn-logout">Đăng xuất</button>
+
         </template>
 
         <template v-else>
@@ -94,7 +97,7 @@ const closeScentMenu = () => {
   hoverTimeout = setTimeout(() => {
     showScentDropdown.value = false
 
-  }, 50) // Delay 100ms để tránh mất hover khi rê chuột
+  }, 50) // Delay 50ms để tránh mất hover khi rê chuột
 
 }
 const openCategoryMenu = () => {
@@ -274,5 +277,16 @@ localStorage.removeItem("user");
 .btn-logout:hover {
   background: #000;
   color: #fff;
+}
+
+.btn-cart {
+  font-size: 20px;
+  text-decoration: none;
+  color: #000;
+  margin-right: 10px;
+  transition: transform 0.2s;
+}
+.btn-cart:hover {
+  transform: scale(1.1);
 }
 </style>

@@ -1,7 +1,9 @@
 <template>
-  <div class="category-page">
-    <h2 class="title">Các loại sản phẩm</h2>
-    <div class="category-grid">
+    <div class="category-view">
+    <Header />
+        <div class="category-page">
+        <h2 class="title">Các loại sản phẩm</h2>
+        <div class="category-grid">
       <div
         v-for="cat in categories"
         :key="cat.id"
@@ -17,15 +19,21 @@
         <h3>{{ cat.name }}</h3>
       </div>
     </div>
+    </div>
   </div>
+
+
 </template>
 
 <script>
 import axios from "axios";
-
+import Header from "@/components/Header.vue";
 
 export default {
   name: "CategoryList",
+   components: {
+    Header, //  phải đăng ký ở đây
+  },
   data() {
     return {
       categories: [],
@@ -61,6 +69,11 @@ export default {
 </script>
 
 <style scoped>
+.category-view {
+  font-family: "Inter", sans-serif;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
 .category-page {
   padding: 40px;
   background: #fafafa;
@@ -73,8 +86,9 @@ export default {
 }
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
+
 }
 .category-card {
   background: white;
@@ -83,6 +97,7 @@ export default {
   padding: 15px;
   transition: 0.2s;
   cursor: pointer;
+
 }
 .category-card:hover {
   transform: scale(1.03);
@@ -90,7 +105,7 @@ export default {
 }
 .category-img {
   width: 100%;
-  height: 150px;
+  height: 250px;
   object-fit: cover;
   border-radius: 8px;
 }

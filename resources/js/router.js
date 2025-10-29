@@ -4,8 +4,6 @@ import Register from './components/Register.vue'
 import Login from './components/Login.vue'
 import Dashboard from './components/Dashboard.vue'
 import ProductsList from '@/components/products/ProductsList.vue';
-import ProductByCategory from '@/components/products/ProductByCategory.vue';
-import ProductByScent from '@/components/products/ProductByScent.vue';
 import DashboardAdmin from './components/admin/DashboardAdmin.vue'
 import ProductManager from './components/admin/ProductManager.vue'
 
@@ -18,24 +16,16 @@ import ProductDetail from '@/components/products/ProductDetail.vue';
 import CategorieProduct from '@/components/admin/CategorieProduct.vue';
 import AllCategory from '@/components/products/AllCategory.vue';
 import Category_Product from '@/components/products/Category_Product.vue';
+import AllScent from '@/components/products/AllScent.vue';
+import Scent_Product from '@/components/products/Scent_Product.vue';
+import Cart from '@/components/Cart.vue';
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
   { path: '/register', component: Register }, // ✅ Trang đăng ký
   { path: '/login', component: Login }, // ✅ Trang đăng ký
   { path: '/dashboard', component: Dashboard },
-  {
-    path: '/category/products/:id',
-    name: 'ProductByCategory',
-    component: ProductByCategory,
-    props: true,
-  },
-  {
-  path: '/products/scent/:id',
-  name: 'ProductByScent',
-  component: ProductByScent,
-  props: true,
-},
+  
 
 
 {
@@ -60,13 +50,13 @@ const routes = [
     path: '/admin/categorie/:id/products',
     name: 'CategorieProduct',
     component: CategorieProduct,
-    props: true,
+     meta: { requiresAuth: true, adminOnly: true },
   },
 {
      path: '/admin/categorie/:id/edit',
     name: 'CategorieEdit',
     component: CategorieEdit,
-    props: true,
+    meta: { requiresAuth: true, adminOnly: true },
 },
 /////////
 {
@@ -81,7 +71,19 @@ const routes = [
     component: Category_Product,
     props: true,
 },
-
+/////
+{
+     path: '/product',
+    name: 'AllScent',
+    component: AllScent,
+    props: true,
+},
+{
+     path: '/scent/:id',
+    name: 'Scent_Product',
+    component: Scent_Product,
+    props: true,
+},
 
   {
     path: '/admin/dashboard',
@@ -102,7 +104,16 @@ const routes = [
   {
   path: '/products/:id/show',
   component: ProductDetail,
-}
+},
+
+///
+{
+     path: '/cart',
+    name: 'Cart',
+    component: Cart,
+    props: true,
+},
+
 
 
 

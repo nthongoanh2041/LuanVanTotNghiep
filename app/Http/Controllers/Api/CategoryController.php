@@ -128,4 +128,22 @@ class CategoryController extends Controller
 
         return response()->json(['message' => 'Category deleted successfully'], 200);
     }
+    // 🟢 Lấy tất cả sản phẩm theo loại
+public function products($id)
+{
+    $category = Category::find($id);
+
+    if (!$category) {
+        return response()->json(['message' => 'Không tìm thấy loại sản phẩm'], 404);
+    }
+
+    // Lấy danh sách sản phẩm thuộc loại này (kèm tên loại)
+    $products = $category->products()->get();
+
+    // Trả về JSON có category_name để Vue hiển thị
+    return response()->json([
+        'category_name' => $category->name,
+        'products' => $products
+    ]);
+}
 }

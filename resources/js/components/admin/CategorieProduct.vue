@@ -1,6 +1,6 @@
 <template>
   <div class="home-view">
-    <Header />
+    <HeaderAdmin />
 
     <div class="page">
       <h2 class="page-title">{{ pageTitle }}</h2>
@@ -45,7 +45,7 @@
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import { useRoute } from "vue-router";
-import Header from "@/components/Header.vue";
+import HeaderAdmin from "@/components/admin/HeaderAdmin.vue";
 import axios from "axios";
 
 // === State ===
@@ -171,9 +171,12 @@ const addToCart = async (productId) => {
 }
 
 .product-list {
-  display: flex;
+  display: grid;
   flex-direction: column;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+
+
 }
 
 .product-item {
@@ -191,8 +194,8 @@ const addToCart = async (productId) => {
 }
 
 .product-image {
-  width: 140px;
-  height: 140px;
+  width: 240px;
+  height: 240px;
   object-fit: cover;
   border-radius: 8px;
   background: #f9f9f9;
@@ -221,25 +224,27 @@ const addToCart = async (productId) => {
 }
 
 .product-actions {
+  margin-top: auto; /* đảm bảo luôn nằm cuối */
   display: flex;
   gap: 10px;
 }
 
+
 .btn {
   padding: 6px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   border: none;
   transition: background 0.2s;
 }
 
 .btn-detail {
-  background: #3498db;
+  background: #000000ff;
   color: white;
 }
 
 .btn-add {
-  background: #2ecc71;
+  background: #000000ff;
   color: white;
 }
 
