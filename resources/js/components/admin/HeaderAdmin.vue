@@ -2,7 +2,7 @@
   <header class="header">
     <div class="header-container">
       <!-- Logo -->
-       <router-link to="/" class="logo">
+       <router-link to="/admin/dashboard" class="logo">
         <div class="logo-icon">S</div>
          <span class="logo-text">SCENTS SHOP</span>
         </router-link>

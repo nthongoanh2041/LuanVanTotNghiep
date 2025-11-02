@@ -19,13 +19,18 @@ import Category_Product from '@/components/products/Category_Product.vue';
 import AllScent from '@/components/products/AllScent.vue';
 import Scent_Product from '@/components/products/Scent_Product.vue';
 import Cart from '@/components/Cart.vue';
+import Order from '@/components/Order.vue';
+import OrderManager from'@/components/admin/OrderManager.vue';
+import OrderItemsManager from'@/components/admin/OrderItemsManager.vue';
+
+
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
   { path: '/register', component: Register }, // ✅ Trang đăng ký
   { path: '/login', component: Login }, // ✅ Trang đăng ký
   { path: '/dashboard', component: Dashboard },
-  
+
 
 
 {
@@ -58,6 +63,21 @@ const routes = [
     component: CategorieEdit,
     meta: { requiresAuth: true, adminOnly: true },
 },
+///////order admin
+{
+     path: '/admin/order-list',
+    name: 'OrderManager',
+    component: OrderManager,
+    meta: { requiresAuth: true, adminOnly: true },
+},
+{
+    path: '/admin/orders/:id',
+    name: 'OrderItemsManager',
+    component: OrderItemsManager,
+    meta: { requiresAuth: true, adminOnly: true },
+},
+
+
 /////////
 {
      path: '/products',
@@ -113,7 +133,13 @@ const routes = [
     component: Cart,
     props: true,
 },
-
+////////////////////////////////
+{
+     path: '/order',
+    name: 'Order',
+    component: Order,
+    props: true,
+},
 
 
 

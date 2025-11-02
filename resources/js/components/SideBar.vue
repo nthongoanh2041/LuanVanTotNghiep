@@ -24,7 +24,7 @@
       <router-link to="/admin/scent" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Mùi Hương
       </router-link>
-       <router-link to="/admin/orders" class="sidebar-link">
+       <router-link to="/admin/order-list" class="sidebar-link">
         <i class="fas fa-file-invoice"></i> Quản lý Đơn hàng
       </router-link>
 

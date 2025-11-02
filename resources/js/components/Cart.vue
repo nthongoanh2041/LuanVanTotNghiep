@@ -158,8 +158,7 @@ export default {
     },
 
     checkout() {
-      alert("🧾 Tiến hành thanh toán...");
-      // this.$router.push("/checkout");
+        this.$router.push("/order");
     },
   },
 };

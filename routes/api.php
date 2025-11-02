@@ -7,11 +7,15 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ScentController;
 use App\Http\Controllers\Api\ManufacturerController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\OrderController;
+
+
 
 
 Route::post('/register', [AuthController::class, 'register']);                          /*api đăng ký*/
 Route::post('/login', [AuthController::class, 'login']);                                /*api đăng nhập*/
-
+Route::get('/user/{id}', [UserController::class, 'show']);
 
 /*Categorie*/
 Route::post('/store', [CategoryController::class, 'store']);                            /*thêm loại sp*/
@@ -49,6 +53,19 @@ Route::get('/indexC/{user_id}', [CartController::class, 'indexC']);
 Route::put('/updateC/{id}', [CartController::class, 'updateC']);
 Route::delete('/destroyC/{id}', [CartController::class, 'destroyC']);
 Route::delete('/clearC', [CartController::class, 'clearC']);
+
+/*Order*/
+
+
+Route::post('/storeO', [OrderController::class, 'storeO']);
+Route::get('/indexO', [OrderController::class, 'indexO']);              /*hiển thị tất cả đơn hàng  */
+Route::put('/updateO/{id}', [OrderController::class, 'updateO']);            ////cập nhật trạng thái ddonww hàng
+Route::get('/showO/{id}', [OrderController::class, 'showO']);            ////Hiển thị chi tiết đơn hàng theo id
+
+
+
+
+
 
 
 
