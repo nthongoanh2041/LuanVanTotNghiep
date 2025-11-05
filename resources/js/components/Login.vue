@@ -82,7 +82,7 @@ const error = ref("");
 const success = ref("");
 const loading = ref(false);
 
-//  kiểm tra email cơ bản
+// kiểm tra email cơ bản
 const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
 const login = async () => {
@@ -90,55 +90,47 @@ const login = async () => {
   success.value = "";
   loading.value = true;
 
-  // ✅ Kiểm tra lỗi frontend
-  if (!form.value.email || !form.value.password) {
-    error.value = "Vui lòng nhập đầy đủ email và mật khẩu.";
-    loading.value = false;
-    return;
-  }
-
-  if (!isValidEmail(form.value.email)) {
-    error.value = "Email không hợp lệ. Vui lòng nhập đúng định dạng.";
-    loading.value = false;
-    return;
-  }
-
-  if (form.value.password.length < 6) {
-    error.value = "Mật khẩu phải có ít nhất 6 ký tự.";
-    loading.value = false;
-    return;
-  }
-
-  // ✅ Nếu hợp lệ, gọi API Laravel
   try {
-    const response = await axios.post("http://localhost:8000/api/login", form.value);
+    const res = await axios.post("http://localhost:8000/api/login", form.value);
 
-    // Laravel trả về: { token: "xxx", user: {...} }
-    // Sau khi axios.post("http://localhost:8000/api/login", form.value)
-const { user, token } = response.data;
+    console.log("🔍 API response:", res.data); // debug
 
-// Lưu thông tin user và token
-localStorage.setItem("user", JSON.stringify(user));
-localStorage.setItem("token", token);
-
-const userRole = user.role ? user.role.trim().toLowerCase() : "";
-
-
-// ✅ Kiểm tra vai trò
-    if (userRole === "admin") {
-      router.push("/admin/dashboard"); // Trang admin
-    } else {
-      router.push("/dashboard"); // Trang khách hàng
+    // ✅ Kiểm tra dữ liệu trả về
+    if (!res.data || !res.data.user) {
+      error.value = "Không nhận được dữ liệu người dùng từ server!";
+      return;
     }
 
+    const user = res.data.user;
+    const token = res.data.access_token;
+    const role = user.role ? user.role.trim().toLowerCase() : "user";
+
+    // ✅ Xóa dữ liệu cũ
+    localStorage.removeItem("user_token");
+    localStorage.removeItem("user_info");
+    sessionStorage.removeItem("admin_token");
+    sessionStorage.removeItem("admin_info");
+
+    // ✅ Lưu token và điều hướng
+    if (role === "admin") {
+      sessionStorage.setItem("admin_token", token);
+      sessionStorage.setItem("admin_info", JSON.stringify(user));
+      success.value = "Đăng nhập quản trị viên thành công!";
+      router.push("/admin/dashboard");
+    } else {
+      localStorage.setItem("user_token", token);
+      localStorage.setItem("user_info", JSON.stringify(user));
+      success.value = "Đăng nhập người dùng thành công!";
+      router.push("/dashboard");
+    }
   } catch (err) {
-    error.value = err.response?.data?.message || "Sai email hoặc mật khẩu!";
+    console.error("❌ Lỗi đăng nhập:", err.response?.data || err.message);
+    error.value = err.response?.data?.error || "Sai email hoặc mật khẩu!";
   } finally {
     loading.value = false;
   }
 };
 </script>
-
 <style scoped>
 @import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css";
 
@@ -256,6 +248,6 @@ const userRole = user.role ? user.role.trim().toLowerCase() : "";
 
   .brand-name {
     font-size: 1.4rem;
-  }
+    }
 }
 </style>

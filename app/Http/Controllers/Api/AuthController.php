@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class AuthController extends Controller
 {
@@ -51,33 +54,43 @@ class AuthController extends Controller
         }
     }
      // Đăng nhập
-    public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+   public function login(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'email'    => 'required|email',
+        'password' => 'required|string',
+    ]);
 
-        // Tìm user theo email
-        $user = User::where('email', $request->email)->first();
-
-        // Kiểm tra mật khẩu
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Email hoặc mật khẩu không đúng.'],
-            ]);
-        }
-
-        // Xóa token cũ nếu cần
-        $user->tokens()->delete();
-
-        // Tạo token mới
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Đăng nhập thành công!',
-            'user' => $user,
-            'token' => $token,
-        ]);
+    if ($validator->fails()) {
+        return response()->json(['error' => $validator->errors()], 400);
     }
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return response()->json(['error' => 'Không tìm thấy người dùng'], 401);
+    }
+
+    if (!Hash::check($request->password, $user->password)) {
+        return response()->json(['error' => 'Mật khẩu không chính xác'], 401);
+    }
+
+    // 🔹 Chuẩn hóa role
+    $role = trim(strtolower($user->role));
+
+    // 🔹 Phân biệt token
+    $tokenName = $role === 'admin' ? 'admin_auth_token' : 'user_auth_token';
+    $token = $user->createToken($tokenName)->plainTextToken;
+
+    return response()->json([
+        'access_token' => $token,
+        'token_type'   => 'Bearer',
+        'user' => [
+            'id'    => $user->id,
+            'name'  => $user->name,
+            'email' => $user->email,
+            'role'  => $role,
+        ]
+    ]);
+}
 }

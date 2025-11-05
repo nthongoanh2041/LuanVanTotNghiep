@@ -66,14 +66,16 @@ export default {
   },
   methods: {
     loadUser() {
-      const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("user");
-      if (token && userData) {
-        this.user = JSON.parse(userData);
-      } else {
-        this.$router.push("/login");
-      }
-    },
+  const token = localStorage.getItem("user_token");
+  const userData = localStorage.getItem("user_info");
+
+  if (token && userData) {
+    this.user = JSON.parse(userData);
+    console.log("User loaded:", this.user);
+  } else {
+    this.$router.push("/login");
+  }
+},
     fetchCategories() {
       axios
         .get("http://localhost:8000/api/categories")

@@ -122,10 +122,14 @@ const goToScent = (id) => {
 };
 
 const logout = () => {
-localStorage.removeItem("user");
-  localStorage.removeItem("token");
-  user.value = null;
-  router.push("/login");
+  if (localStorage.getItem("admin_token")) {
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_info");
+  } else {
+    localStorage.removeItem("user_token");
+    localStorage.removeItem("user_info");
+  }
+  window.location.href = "/login";
 };
 </script>
 

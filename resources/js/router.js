@@ -29,7 +29,7 @@ const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
   { path: '/register', component: Register }, // ✅ Trang đăng ký
   { path: '/login', component: Login }, // ✅ Trang đăng ký
-  { path: '/dashboard', component: Dashboard },
+  { path: '/dashboard', component: Dashboard, },
 
 
 
@@ -153,38 +153,19 @@ const router = createRouter({
   routes,
 })
 
-// 🧩 Route Guard (bảo vệ route)
 router.beforeEach((to, from, next) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const token = localStorage.getItem('token');
+  const isAdminRoute = to.path.startsWith('/admin');
 
-  // Nếu route yêu cầu đăng nhập mà chưa có token → quay về login
-  if (to.meta.requiresAuth && !token) {
-    next('/login');
-    return;
+  const adminToken = sessionStorage.getItem('admin_token');
+  const userToken = localStorage.getItem('user_token');
+
+  // Nếu route yêu cầu đăng nhập
+  if (to.meta.requiresAuth) {
+    if (isAdminRoute && !adminToken) return next('/login');
+    if (!isAdminRoute && !userToken) return next('/login');
   }
 
-  // Nếu route chỉ dành cho admin mà role không phải admin → về homepage
-  if (to.meta.adminOnly && user?.role?.trim().toLowerCase() !== 'admin') {
-    next('/');
-    return;
-  }
-
-  next(); // cho phép truy cập
-});
-router.beforeEach((to, from, next) => {
-  const isAdminRoute = to.path.startsWith('/admin'); // Kiểm tra xem route có phải là các route admin không
-
-  if (isAdminRoute) {
-    // Nếu là route admin, sử dụng HeaderAdmin
-    document.title = 'Admin Page';
-    // Bạn có thể set document.title cho các trang admin
-    next();
-  } else {
-    // Nếu không phải route admin, sử dụng Header chung
-    document.title = 'User Page';
-    next();
-  }
+  next();
 });
 
 export default router
