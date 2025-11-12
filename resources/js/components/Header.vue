@@ -10,22 +10,8 @@
       <!-- Navigation -->
       <nav class="nav">
           <!-- Navigation -->
-      <div class="dropdown-wrapper"
-     @mouseenter="openScentMenu"
-     @mouseleave="closeScentMenu">
-  <!-- <span class="nav-item">Mùi hương</span> -->
   <router-link to="/product" class="nav-item">Danh mục Mùi hương</router-link>
-</div>
-
-        <!-- Sản phẩm (dropdown) -->
-        <!-- Sản phẩm (dropdown) -->
-<div class="dropdown-wrapper"
-     @mouseenter="openCategoryMenu"
-     @mouseleave="closeCategoryMenu">
-  <!-- <span class="nav-item">Sản phẩm</span> -->
   <router-link to="/products" class="nav-item">Danh mục Sản phẩm</router-link>
-</div>
-
         <router-link to="/about">Giới thiệu</router-link>
         <router-link to="/contact">Liên hệ</router-link>
       </nav>
@@ -64,7 +50,7 @@ const showCategoryDropdown = ref(false)
 let hoverTimeout = null
 
 onMounted(() => {
-  const storedUser = localStorage.getItem("user");
+  const storedUser = localStorage.getItem("user_info");
   if (storedUser) user.value = JSON.parse(storedUser);
   fetchCategories();
   fetchScents();

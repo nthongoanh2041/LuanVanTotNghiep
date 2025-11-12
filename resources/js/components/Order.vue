@@ -130,7 +130,7 @@ export default {
 
   methods: {
     async initUserAndCart() {
-      const userInfoStr = localStorage.getItem("user");
+      const userInfoStr = localStorage.getItem("user_info");
       if (!userInfoStr) {
         console.warn("⚠ Chưa đăng nhập — form trống cho khách tự nhập");
         this.fetchCart();

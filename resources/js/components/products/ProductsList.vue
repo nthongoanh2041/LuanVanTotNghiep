@@ -64,7 +64,7 @@ export default {
     },
 
    async addToCart(product) {
-  const userInfoStr = localStorage.getItem('user');
+  const userInfoStr = localStorage.getItem('user_info');
   let user_id = null;
 
   if (userInfoStr) {

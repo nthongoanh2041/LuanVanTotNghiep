@@ -132,7 +132,7 @@ export default {
     },
 
     fetchCart() {
-      const userInfoStr = localStorage.getItem("user");
+      const userInfoStr = localStorage.getItem("user_info");
       if (!userInfoStr) {
         console.warn("⚠ Không có user_id trong localStorage!");
         return;

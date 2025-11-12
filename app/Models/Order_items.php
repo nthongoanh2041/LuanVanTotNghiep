@@ -13,6 +13,7 @@ class Order_items extends Model
         'order_id',
         'product_id',
         'price',
+        'quantity',
         'total_amount',
     ];
 
@@ -26,5 +27,5 @@ class Order_items extends Model
         return $this->belongsTo(Order::class);
     }
 
-    
+
 }

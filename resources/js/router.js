@@ -22,7 +22,7 @@ import Cart from '@/components/Cart.vue';
 import Order from '@/components/Order.vue';
 import OrderManager from'@/components/admin/OrderManager.vue';
 import OrderItemsManager from'@/components/admin/OrderItemsManager.vue';
-
+import ManufacturerManager from './components/admin/ManufacturerManager.vue'
 
 
 const routes = [
@@ -125,6 +125,16 @@ const routes = [
   path: '/products/:id/show',
   component: ProductDetail,
 },
+
+/////
+{
+    path: '/admin/manufacturer-manager',
+
+    component: ManufacturerManager, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+  },
+
+
 
 ///
 {

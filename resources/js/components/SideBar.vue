@@ -14,7 +14,7 @@
       <router-link to="/admin/product-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Sản phẩm
       </router-link>
-      <router-link to="/admin/manufacturers" class="sidebar-link"> <!-- giống đường dẫn ở router -->
+      <router-link to="/admin/manufacturer-manager" class="sidebar-link"> <!-- giống đường dẫn ở router -->
         <i class="fas fa-file-invoice"></i> Quản lý Nhà Sản Xuất
       </router-link>
       <router-link to="/admin/categorie-list" class="sidebar-link">

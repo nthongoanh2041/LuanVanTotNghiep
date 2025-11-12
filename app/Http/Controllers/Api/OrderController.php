@@ -47,7 +47,7 @@ class OrderController extends Controller
                     'order_id'     => $order->id,
                     'product_id'   => $item['product_id'] ?? $item['product']['id'] ?? null, // ✅ linh hoạt key
                     'price'        => $item['product']['price'] ?? $item['price'] ?? 0,
-                    'quantity'     => $item['quantity'] ?? 1,
+                    'quantity'     => intval($item['quantity'] ?? 1),
                     'total_amount' => $item['total_amount'] ?? ($item['product']['price'] * $item['quantity']),
                 ]);
             }
