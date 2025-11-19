@@ -21,7 +21,7 @@
         <i class="fas fa-box"></i> Quản lý Loại Sản Phẩm
 
       </router-link>
-      <router-link to="/admin/scent" class="sidebar-link">
+      <router-link to="/admin/scent-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Mùi Hương
       </router-link>
        <router-link to="/admin/order-list" class="sidebar-link">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+
 Route::get('/{any}', function () {
     return view('app');// gọi file home.blade.php
 })->where('any','.*');

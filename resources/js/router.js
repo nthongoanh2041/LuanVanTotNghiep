@@ -23,7 +23,8 @@ import Order from '@/components/Order.vue';
 import OrderManager from'@/components/admin/OrderManager.vue';
 import OrderItemsManager from'@/components/admin/OrderItemsManager.vue';
 import ManufacturerManager from './components/admin/ManufacturerManager.vue'
-
+import ManufacturerForm from './components/admin/ManufacturerForm.vue'
+import ScentManager from './components/admin/ScentManager.vue'
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
@@ -121,6 +122,19 @@ const routes = [
  component: ProductEdit,
   meta: { requiresAuth: true, adminOnly: true },
 },
+/////
+// {
+// path: '/admin/manufacture-form',
+//  component: ManufacturerManager,
+//   meta: { requiresAuth: true, adminOnly: true },
+// },
+
+{
+  path: "/admin/manufacturer-form",
+  name: 'ManufacturerForm',
+  component: ManufacturerForm,
+  props: true,
+},
   {
   path: '/products/:id/show',
   component: ProductDetail,
@@ -134,7 +148,12 @@ const routes = [
     meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
   },
 
-
+////scent
+{
+    path: '/admin/scent-manager',
+    component: ScentManager, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+  },
 
 ///
 {

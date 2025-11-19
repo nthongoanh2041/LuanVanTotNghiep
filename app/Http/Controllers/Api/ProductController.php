@@ -96,7 +96,7 @@ elseif ($request->filled('image')) {
     /**
      * Display the specified resource.
      */
- public function showP($id)
+public function showP($id)
 {
     // Lấy sản phẩm kèm category và scent
     $product = Product::with(['category', 'scent'])->find($id);
@@ -105,18 +105,27 @@ elseif ($request->filled('image')) {
         return response()->json(['message' => 'Không tìm thấy sản phẩm'], 404);
     }
 
-    // Xử lý ảnh
+    // Xử lý ảnh sản phẩm
     if ($product->image) {
         $cleanImage = trim($product->image);
 
-        // Nếu chưa là URL tuyệt đối, thêm url() trỏ vào thư mục public/image
-        if (!str_starts_with($cleanImage, 'http')) {
-            $product->image = url('image/' . basename($cleanImage));
-        } else {
+        if (str_starts_with($cleanImage, 'http')) {
+            // Nếu đã là URL tuyệt đối → giữ nguyên
             $product->image = $cleanImage;
+        } else {
+            // Nếu là tên file hoặc đường dẫn tương đối → trỏ vào storage/images
+            $product->image = url('storage/images/' . basename($cleanImage));
         }
     } else {
         $product->image = null;
+    }
+
+    // Xử lý ảnh category (nếu muốn)
+    if ($product->category && $product->category->image) {
+        $catImage = trim($product->category->image);
+        if (!str_starts_with($catImage, 'http')) {
+            $product->category->image = url('storage/categories/' . basename($catImage));
+        }
     }
 
     return response()->json($product);

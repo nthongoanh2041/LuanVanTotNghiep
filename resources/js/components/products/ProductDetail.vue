@@ -1,69 +1,44 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="page-wrapper">
     <Header />
 
-    <div class="container mx-auto py-12 px-6">
-      <div v-if="loading" class="text-center text-gray-500 text-lg">
-        Đang tải dữ liệu...
-      </div>
+    <div class="container">
+      <div v-if="loading" class="loading">Đang tải dữ liệu...</div>
 
-      <div
-        v-else
-        class="grid grid-cols-1 lg:grid-cols-2 gap-12 bg-white rounded-2xl shadow-2xl p-10 border border-gray-200"
-      >
-        <!-- Hình ảnh sản phẩm -->
-        <div class="flex justify-center items-center h-[500px]">
+      <div v-else class="product-box">
+
+        <!-- Hình ảnh bên trái -->
+        <div class="image-section">
           <img
-            :src="product.image || '/no-image.png'"
+            :src="getFullImageUrl(product.image)"
             :alt="product.name"
-            class="rounded-2xl shadow-md max-h-full w-auto object-contain bg-gray-50 p-4"
+            class="product-image"
           />
         </div>
 
-        <!-- Thông tin sản phẩm -->
-        <div class="flex flex-col justify-between">
-          <div>
-            <h2 class="text-4xl font-semibold text-gray-800 mb-4">
-              <p><strong>Tên sản phẩm: </strong>{{ product.name }}</p>
-            </h2>
-            <p class="text-2xl text-red-500 font-semibold mb-4">
-              <p><strong>Giá: </strong>{{ formatCurrency(product.price) }}</p>
-            </p>
-            <p class="text-gray-700 mb-4 leading-relaxed">
-             <p><strong>Mô tả sản phẩm: </strong> {{ product.description || "Chưa có mô tả cho sản phẩm này." }}</p>
-            </p>
+        <!-- Thông tin sản phẩm bên phải -->
+        <div class="info-section">
+          <h1 class="title"><strong>Tên sản phẩm: </strong>{{ product.name }}</h1>
 
-            <div class="space-y-2 text-gray-700">
-              <p><strong>Loại sản phẩm:</strong> {{ product.category?.name || "Không có dữ liệu" }}</p>
-              <p><strong>Mùi hương:</strong> {{ product.scent?.name || "Không có dữ liệu" }}</p>
-              <!-- <p><strong>Số lượng còn lại:</strong> {{ product.quantity }}</p> -->
-            </div>
+          <p class="price"><strong>Giá:</strong>{{ formatCurrency(product.price) }}</p>
 
-            <div class="mt-6 flex items-center gap-4">
-              <label for="quantity" class="font-medium text-gray-700">Số lượng:</label>
-              <input
-                id="quantity"
-                type="number"
-                min="1"
-                v-model.number="cartQuantity"
-                class="border border-gray-300 rounded-lg px-3 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+          <p class="description"><strong>Mô tả:</strong>
+            {{ product.description || "Chưa có mô tả cho sản phẩm này." }}
+          </p>
+
+          <div class="info">
+            <p><strong>Loại sản phẩm:</strong> {{ product.category?.name || "-" }}</p>
+            <p><strong>Mùi hương:</strong> {{ product.scent?.name || "-" }}</p>
           </div>
 
-          <div class="mt-8 flex gap-4">
-            <button
-  @click="addToCart(product)"
-  class="flex-1 bg-blue-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-blue-700 transition-all shadow-md"
->
-  🛒 Thêm vào giỏ hàng
-</button>
-            <router-link
-              to="/dashboard"
-              class="flex-1 text-center bg-gray-200 hover:bg-gray-300 text-gray-700 py-4 rounded-xl text-lg font-medium transition-all shadow-sm"
-            >
-              ⬅ Quay lại
-            </router-link>
+          <div class="quantity-box">
+            <label for="quantity">Số lượng:</label>
+            <input id="quantity" type="number" min="1" v-model.number="cartQuantity" />
+          </div>
+
+          <div class="action-buttons">
+            <button class="add-cart" @click="addToCart(product)">🛒 Thêm vào giỏ hàng</button>
+            <router-link to="/dashboard" class="back-btn">⬅ Quay lại</router-link>
           </div>
         </div>
       </div>
@@ -77,10 +52,12 @@
 import axios from "axios";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+const DEFAULT_IMAGE_URL = "/no-image.png";
 
 export default {
   name: "ProductDetail",
   components: { Header, Footer },
+
   data() {
     return {
       product: {},
@@ -88,51 +65,56 @@ export default {
       loading: true,
     };
   },
+
   mounted() {
     this.fetchProduct();
   },
+
   methods: {
     async fetchProduct() {
       const id = this.$route.params.id;
+
       try {
         const res = await axios.get(`http://localhost:8000/api/showP/${id}`);
         this.product = res.data;
       } catch (err) {
-        console.error("Lỗi khi tải chi tiết sản phẩm:", err);
-        alert("Không thể tải chi tiết sản phẩm!");
-        this.product = { image: "/no-image.png" };
+        console.error("Lỗi tải sản phẩm:", err);
+        this.product = { image: DEFAULT_IMAGE_URL };
       } finally {
         this.loading = false;
       }
     },
 
     async addToCart(product) {
-  const userInfoStr = localStorage.getItem('user_info');
-  let user_id = null;
+      const userInfoStr = localStorage.getItem("user_info");
+      let user_id = null;
 
-  if (userInfoStr) {
-    const userInfo = JSON.parse(userInfoStr);
-    user_id = userInfo.id;
-  }
+      if (userInfoStr) {
+        user_id = JSON.parse(userInfoStr).id;
+      }
 
-  const quantity = this.cartQuantity; // số lượng mặc định
-  const total_amount = product.price * quantity; // ✅ Tính tổng tiền
+      const quantity = this.cartQuantity;
+      const total_amount = parseFloat(product.price) * quantity;
 
-  try {
-    const res = await axios.post("http://localhost:8000/api/storeC", {
-      user_id: user_id,
-      product_id: product.id,
-      quantity: quantity,
-      total_amount: total_amount, // ✅ Gửi thêm total_amount
-    });
+      try {
+        await axios.post("http://localhost:8000/api/storeC", {
+          user_id,
+          product_id: product.id,
+          quantity,
+          total_amount,
+        });
 
-    console.log("✅ Thêm sản phẩm vào giỏ hàng:", res.data);
-    alert(`🛒 Đã thêm ${product.name} (${quantity} cái) vào giỏ hàng!`);
-  } catch (err) {
-    console.error("❌ Lỗi khi thêm giỏ hàng:", err);
-    alert("Không thể thêm sản phẩm vào giỏ hàng!");
-  }
-},
+        alert(`🛒 Đã thêm ${product.name} (${quantity} cái) vào giỏ hàng!`);
+      } catch (err) {
+        console.error("❌ Lỗi thêm giỏ hàng:", err);
+        alert("Không thể thêm sản phẩm vào giỏ hàng!");
+      }
+    },
+
+    getFullImageUrl(path) {
+      if (!path || path.trim() === "") return DEFAULT_IMAGE_URL;
+      return path.trim();
+    },
 
     formatCurrency(value) {
       if (!value) return "Liên hệ";
@@ -145,141 +127,131 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+.page-wrapper {
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
 .container {
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 0;
 }
 
-/* Khung tổng thể */
-.min-h-screen {
-  background-color: #f9fafb;
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
 }
 
-/* Card chi tiết */
-.grid.bg-white {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 cột ngang */
-  align-items: center;
-  gap: 40px;
-  background-color: #fff;
-  border-radius: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-  padding: 50px;
-  border: 1px solid #e5e7eb;
+.product-box {
+  display: flex;
+  gap: 30px;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Hình ảnh bên trái */
-.grid.bg-white > div:first-child {
+.image-section {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #ffffff;
+  border-radius: 12px;
 }
 
-.grid.bg-white img {
-  max-width: 100%;
-  max-height: 500px;
+.product-image {
+  width: 100%;
+  max-width: 420px;
+  height: 400px;
   object-fit: contain;
-  border-radius: 16px;
-  background-color: #f3f4f6;
-  padding: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
 }
 
-.grid.bg-white img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-}
-
-/* Phần thông tin bên phải */
-.grid.bg-white > div:last-child {
+.info-section {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.grid.bg-white h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 12px;
+.title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
 }
 
-.text-red-500 {
-  font-size: 1.5rem;
-  color: #dc2626;
-  font-weight: 600;
-  margin-bottom: 12px;
+.price {
+  font-size: 26px;
+  font-weight: bold;
+  color: #e55;
 }
 
-.text-gray-700 {
-  color: #374151;
+.description {
+  color: #555;
   line-height: 1.6;
 }
 
-/* Nhóm thông tin phụ */
-.space-y-2 p {
-  margin-bottom: 8px;
+.info p {
+  margin-bottom: 4px;
+  color: #444;
 }
 
-/* Input số lượng */
-input[type="number"] {
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+.quantity-box {
+  margin-top: 12px;
+}
+
+.quantity-box input {
   width: 80px;
-  padding: 8px 10px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   text-align: center;
-  font-size: 15px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-input[type="number"]:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
 }
 
-/* Nút thêm giỏ hàng */
-button.bg-blue-600 {
-  background-color: #000;
-  color: #fff;
-  border-radius: 12px;
-  padding: 14px 0;
-  font-size: 17px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.add-cart {
+  flex: 1;
+  padding: 12px;
+  background: rgb(0, 0, 0);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
-button.bg-blue-600:hover {
-  background-color: #444;
-  transform: translateY(-2px);
+.add-cart:hover {
+  background: #242525;
 }
 
-/* Nút quay lại */
-a.bg-gray-200 {
-  background-color: #e5e7eb;
-  color: #374151;
-  border-radius: 12px;
-  padding: 14px 0;
-  font-size: 17px;
-  transition: all 0.3s ease;
+.back-btn {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  background: #ddd;
+  border-radius: 8px;
+  text-decoration: none;
+  color: black;
 }
 
-a.bg-gray-200:hover {
-  background-color: #d1d5db;
-  transform: translateY(-2px);
+.back-btn:hover {
+  background: #ccc;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-  .grid.bg-white {
-    grid-template-columns: 1fr;
-    padding: 24px;
-  }
-  .grid.bg-white img {
-    max-height: 400px;
+@media (max-width: 900px) {
+  .product-box {
+    flex-direction: column;
   }
 }
 </style>
-
