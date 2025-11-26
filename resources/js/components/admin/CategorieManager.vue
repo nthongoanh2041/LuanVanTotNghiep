@@ -78,7 +78,7 @@
           <!-- Thêm loại sản phẩm -->
           <div class="add-category-button">
             <router-link to="/admin/categorie-form" class="btn btn-primary btn-lg">
-              + Thêm loại sản phẩm
+               Thêm loại sản phẩm
             </router-link>
           </div>
         </div>
@@ -163,27 +163,140 @@ export default {
 
 <style scoped>
 /* giữ nguyên style cũ */
-.header { position: fixed;
-     top: 0; left: 0; right: 0; z-index: 100; background: #fff; border-bottom: 1px solid #eee; }
+.header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+    }
 
-.sidebar { position: fixed; top: 80px; left: 0; width: 250px; height: calc(100vh - 80px); background-color: #f9f9f9; border-right: 1px solid #ddd; padding: 20px; overflow-y: auto; }
-.admin-body { display: flex; margin-top: 80px; }
-.main-content { flex: 1; margin-left: 300px; padding: 20px 40px; min-height: calc(100vh - 80px); background-color: #fafafa; }
-.section-title { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-.categorie-list-items { display:flex; grid-template-columns: repeat(4, 1fr); gap: 20px; list-style: none; padding: 0; margin-right: 15px; }
-.categorie-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
-.category-img { width: 200px; height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; }
-.card-actions { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
-.btn-outline-primary { color: #007bff; border: 1px solid #007bff; padding: 6px 12px; font-size: 14px; }
-.btn-outline-primary:hover { background: #007bff; color: #fff; }
-.btn-outline-danger { color: #dc3545; border: 1px solid #dc3545; padding: 6px 12px; font-size: 14px; }
-.btn-outline-danger:hover { background: #dc3545; color: #fff; }
-.btn-outline-success { color: #28a745; border: 1px solid #28a745; padding: 6px 12px; font-size: 14px; }
-.btn-outline-success:hover { background: #28a745; color: #fff; }
-.add-category-button { margin-top: 20px; text-align: right; }
-.pagination { display: flex; justify-content: center; margin-top: 20px; list-style: none; }
-.page-item { margin: 0 5px; }
-.page-link { padding: 6px 12px; font-size: 14px; cursor: pointer; color: #000; border: 1px solid #000; border-radius: 4px; }
-.page-link:hover { background-color: #007bff; color: #fff; border-color: #007bff; }
-.loading { text-align: center; font-size: 18px; color: #333; }
+.sidebar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 250px;
+    height: calc(100vh - 80px);
+    background-color: #f9f9f9;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+.admin-body {
+    display: flex;
+    margin-top: 80px;
+}
+.main-content {
+    flex: 1;
+    margin-left: 300px;
+    padding: 20px 40px;
+    min-height: calc(100vh - 80px);
+    background-color: #fafafa;
+}
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.categorie-list-items {
+    display:flex;
+    grid-template-columns:repeat(4, 1fr);
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin-right: 15px;
+}
+.categorie-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.category-img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+.card-actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.btn-outline-primary {
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.btn-outline-primary:hover {
+    background: #007bff;
+    color: #fff;
+}
+.btn-outline-danger {
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.btn-outline-danger:hover {
+    background: #dc3545;
+    color: #fff;
+}
+.btn-outline-success {
+    color: #28a745;
+    border: 1px solid #28a745;
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.btn-outline-success:hover {
+    background: #28a745;
+    color: #fff;
+}
+.add-category-button {
+  display: inline-block;
+  background-color: #000; /* nền đen */
+  color: #fff; /* chữ trắng */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 20px;
+
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    list-style: none;
+}
+.page-item {
+    margin: 0 5px;
+}
+.page-link {
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #000;
+    border: 1px solid #000;
+    border-radius: 4px;
+}
+.page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+.loading {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    }
 </style>

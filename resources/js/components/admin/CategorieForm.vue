@@ -57,8 +57,8 @@
           <!-- Nút hành động -->
           <div class="form-actions">
             <button type="submit" class="btn btn-primary"> Lưu</button>
-            <router-link to="/admin/categories" class="btn btn-secondary">
-              ⬅ Hủy
+            <router-link to="/admin/categorie-manager" class="btn btn-secondary">
+               Hủy
             </router-link>
           </div>
         </form>

@@ -54,10 +54,7 @@
             </div>
 
             <!-- Số lượng -->
-            <div class="form-group">
-              <label>Số lượng:</label>
-              <input v-model="product.quantity" type="number" class="form-control" required />
-            </div>
+
 
             <!-- Mô tả -->
             <div class="form-group">
@@ -77,7 +74,7 @@
             <!-- Nút -->
             <div class="form-actions">
               <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
-              <router-link to="/admin/products" class="btn btn-secondary">⬅ Quay lại</router-link>
+              <router-link to="/admin/product-manager" class="btn btn-secondary">⬅ Quay lại</router-link>
             </div>
           </form>
         </div>
@@ -103,7 +100,6 @@ export default {
         scent_id: "",
         manufacturer_id: "",
         price: "",
-        quantity: "",
         description: "",
         image: "",
       },
@@ -157,7 +153,7 @@ export default {
 
   const fields = [
     "name", "category_id", "scent_id",
-    "manufacturer_id", "price", "quantity",
+    "manufacturer_id", "price",
     "description"
   ];
 

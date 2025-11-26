@@ -20,4 +20,11 @@ class Product extends Model
         return $this->belongsTo(Scent::class);
     }
 
+    protected static function booted()
+{
+    static::saving(function ($product) {
+        $product->status = $product->quantity < 10 ? 0 : 1;
+    });
+}
+
 }

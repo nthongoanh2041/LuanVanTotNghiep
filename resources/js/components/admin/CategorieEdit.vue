@@ -55,7 +55,7 @@
 
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
-            <router-link to="/admin/categories" class="btn btn-secondary">
+            <router-link to="/admin/categorie-manager" class="btn btn-secondary">
               ⬅ Quay lại
             </router-link>
           </div>

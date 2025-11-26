@@ -43,11 +43,6 @@
           </div>
 
           <div class="form-group">
-            <label>Số lượng:</label>
-            <input v-model="form.quantity" type="number" min="0" />
-          </div>
-
-          <div class="form-group">
             <label>Mô tả:</label>
             <textarea v-model="form.description"></textarea>
           </div>
@@ -61,6 +56,9 @@
           </div>
 
           <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+          <router-link to="/admin/product-manager" class="btn btn-secondary">
+               Hủy
+            </router-link>
         </form>
       </div>
     </div>
@@ -195,5 +193,29 @@ export default {
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
+}
+.btn-secondary {
+  background: #ccc;
+  color: #000;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+}
+
+.btn-secondary:hover {
+  background: #aaa;
+}
+.actions {
+  display: inline-block;
+  background-color: #000; /* nền đen */
+  color: #fff; /* chữ trắng */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 20px;
+
 }
 </style>

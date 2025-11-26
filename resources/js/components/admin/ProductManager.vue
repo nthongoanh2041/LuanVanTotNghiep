@@ -16,50 +16,56 @@
         <div v-else>
           <h2 class="section-title">Danh sách sản phẩm</h2>
 
-          <ul class="product-list-items">
-            <li
-              v-for="product in paginatedProducts"
-              :key="product.id"
-              class="product-list-item"
-            >
-              <router-link :to="'/product/' + product.id" class="product-link">
-                <div class="product-frame">
-                <div v-if="!product.imageUrl" class="text-red-500">Không có hình</div>
-                <img v-else :src="product.imageUrl" class="product-img" alt="Product Image" />
+          <table class="table-product">
+  <thead>
+    <tr>
+      <th>Hình ảnh</th>
+      <th>Tên sản phẩm</th>
+      <th>Nhà sản xuất</th>
+      <th>Mùi hương</th>
+      <th>Giá</th>
+      <!-- <th>Số lượng</th> -->
+      <th>Hành động</th>
+    </tr>
+  </thead>
 
+  <tbody>
+    <tr v-for="product in paginatedProducts" :key="product.id">
+      <td class="img-cell">
+        <router-link :to="'/product/' + product.id">
+          <img v-if="product.imageUrl" :src="product.imageUrl" class="img-small" />
+          <span v-else class="text-red-500">Không có hình</span>
+        </router-link>
+      </td>
 
-                </div>
-              </router-link>
+      <td>
+        <router-link :to="'/product/' + product.id" class="product-link">
+          {{ product.name }}
+        </router-link>
+      </td>
 
-              <div class="product-details">
-                <router-link :to="'/product/' + product.id" class="product-link">
-                  <h5 class="product-name">{{ product.name }}</h5>
-                </router-link>
+      <td>{{ getManufacturerName(product.manufacturer_id) }}</td>
 
-                <p class="product-manufacturer">
-                  Nhà sản xuất:
-                  <span v-if="product.manufacturer_id">{{ getManufacturerName(product.manufacturer_id) }}</span>
-                  <span v-else class="text-muted">Chưa có</span>
-                </p>
+      <td>{{ getScentName(product.scent_id) }}</td>
 
-                <p class="product-type">
-                  Mùi hương:
-                  <span v-if="product.scent_id">{{ getScentName(product.scent_id) }}</span>
-                  <span v-else class="text-muted">Chưa có</span>
-                </p>
+      <td>{{ formatCurrency(product.price) }}</td>
 
-                <p class="product-price">{{ formatCurrency(product.price) }}</p>
+      <!-- <td>{{ product.quantity }}</td> -->
 
-                <div class="product-actions">
-                  <button @click="deleteProduct(product.id)" class="btn btn-outline-danger btn-sm">Xóa</button>
-                  <router-link :to="'/admin/products/' + product.id + '/edit'" class="btn btn-outline-primary btn-sm">
+      <td>
+        <button @click="deleteProduct(product.id)" class="btn btn-outline-danger btn-sm">Xóa</button>
 
-                    Sửa
-                  </router-link>
-                </div>
-              </div>
-            </li>
-          </ul>
+        <router-link
+          :to="'/admin/products/' + product.id + '/edit'"
+          class="btn btn-outline-primary btn-sm"
+        >
+          Sửa
+        </router-link>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
           <!-- Phân trang -->
           <nav aria-label="Pagination">
@@ -88,7 +94,7 @@
 
     <!-- Nút thêm sản phẩm -->
     <div class="add-product-button">
-      <router-link to="/admin/product-form" class="btn btn-primary btn-lg">+ Thêm sản phẩm</router-link>
+      <router-link to="/admin/product-form" class="btn btn-primary btn-lg"> Thêm sản phẩm</router-link>
     </div>
   </div>
 </template>
@@ -225,143 +231,121 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-/* Sidebar cố định */
-.sidebar {
-  position: fixed;
-  top: 80px; /* trừ chiều cao header */
-  left: 0;
-  width: 250px;
-  height: calc(100vh - 80px);
-  background-color: #f9f9f9;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-  overflow-y: auto;
-  z-index: 90;
-}
-
-/* Body chính */
+/* Layout */
 .admin-body {
   display: flex;
   margin-top: 80px;
 }
 
-/* Phần nội dung đẩy sang phải để không bị sidebar đè */
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 250px;
+  background: #f9f9f9;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+/* Content */
 .main-content {
   flex: 1;
-  margin-left: 300px; /* đẩy ra khỏi sidebar */
+  margin-left: 270px;
   padding: 20px 40px;
-  min-height: calc(100vh - 80px);
-  background-color: #fafafa;
-
+  background: #fafafa;
 }
 
-/* Danh sách sản phẩm */
 .section-title {
   font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: #333;
-
+  font-weight: bold;
+  margin-bottom: 18px;
 }
 
-.product-list-items {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* ✅ 2 cột */
-  gap: 20px; /* ✅ khoảng cách giữa các card */
-  list-style: none;
-  padding: 0;
-
-}
-
-.product-list-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 12px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-}
-.product-list-item:hover {
-  transform: translateY(-4px);
-}
-
-.product-frame {
-  width: 200px;
-  height: 200px;
-  margin-right: 15px;
+/* TABLE */
+.table-product {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
   border-radius: 8px;
   overflow: hidden;
-
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
-.product-img {
-  width: 120%;
-  height: 120%;
 
+.table-product th,
+.table-product td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-product th {
+  background: #000;
+  color: white;
+}
+
+/* IMAGE */
+.img-cell {
+  width: 190px;
+}
+
+.img-small {
+  width: 170px;
+  height: 170px;
   object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
 }
 
-
-
-.product-name {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #222;
+/* LINKS */
+.product-link {
+  color: #000;
+  text-decoration: none;
+  font-weight: 600;
+}
+.product-link:hover {
+  text-decoration: underline;
 }
 
-.product-manufacturer,
-.product-type {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.product-price {
-  font-size: 15px;
-  font-weight: bold;
-  color: #007bff;
-  margin-top: 4px;
-}
-
-.product-actions {
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn {
-  padding: 12px 24px;
+/* BUTTONS */
+.btn-outline-primary,
+.btn-outline-danger {
+  padding: 5px 10px;
   font-size: 14px;
   cursor: pointer;
+  border-radius: 6px;
+
 }
 
 .btn-outline-primary {
-  color: #007bff;
   border: 1px solid #007bff;
-  margin-left: 5px;
+  color: #007bff;
 }
-.btn-outline-primary:hover {
-  background: #007bff;
-  color: #fff;
-}
-
 .btn-outline-danger {
-  color: #dc3545;
   border: 1px solid #dc3545;
-}
-.btn-outline-danger:hover {
-  background: #dc3545;
-  color: #fff;
+  color: #dc3545;
 }
 
+/* ADD button */
 .add-product-button {
+  display: inline-block;
+  background-color: #000; /* nền đen */
+  color: #fff; /* chữ trắng */
   position: fixed;
   bottom: 20px;
   right: 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 12px 20px;
 }
+
+
+
+
+/* PAGINATION */
 .pagination {
   display: flex;
   justify-content: center;
@@ -374,24 +358,22 @@ export default {
 }
 
 .page-link {
-  padding: 6px 12px;
-  font-size: 14px;
+  border: 1px solid #000;
+  padding: 5px 10px;
+  background: white;
   cursor: pointer;
-  color: #000000;
-  border: 1px solid #000000;
-
-  border-radius: 4px;
 }
 
-.page-link:hover {
-  background-color: #007bff;
-  color: #fff;
-  border-color: #007bff;
+.page-item.active .page-link {
+  background: #000;
+  color: white;
 }
 
+/* Loading */
 .loading {
   text-align: center;
   font-size: 18px;
   color: #333;
 }
+
 </style>

@@ -51,7 +51,7 @@ class ScentController extends Controller
     ], 200);
 }
 
-public function destroy($id)/// xóa theo id - delete
+public function destroyS($id)/// xóa theo id - delete
 {
     $scent = Scent::find($id);
 

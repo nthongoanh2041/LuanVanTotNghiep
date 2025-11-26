@@ -17,15 +17,19 @@
       <router-link to="/admin/manufacturer-manager" class="sidebar-link"> <!-- giống đường dẫn ở router -->
         <i class="fas fa-file-invoice"></i> Quản lý Nhà Sản Xuất
       </router-link>
-      <router-link to="/admin/categorie-list" class="sidebar-link">
+      <router-link to="/admin/categorie-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Loại Sản Phẩm
 
       </router-link>
       <router-link to="/admin/scent-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Mùi Hương
       </router-link>
-       <router-link to="/admin/order-list" class="sidebar-link">
+       <router-link to="/admin/order-manager" class="sidebar-link">
         <i class="fas fa-file-invoice"></i> Quản lý Đơn hàng
+      </router-link>
+
+      <router-link to="/admin/stock" class="sidebar-link">
+        <i class="fas fa-box"></i> Quản lý Kho
       </router-link>
 
       <router-link to="" class="sidebar-link">

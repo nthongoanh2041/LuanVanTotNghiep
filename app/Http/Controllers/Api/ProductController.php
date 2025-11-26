@@ -49,7 +49,7 @@ class ProductController extends Controller
         'scent_id' => 'required|exists:scents,id',
         'manufacturer_id' => 'required|exists:manufacturers,id',
         'price' => 'required|numeric|min:0',
-        'quantity'=>'required|numeric',
+        // 'quantity'=>'required|numeric',
         'description' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
@@ -70,7 +70,7 @@ class ProductController extends Controller
     $product->scent_id = $request->scent_id;
     $product->manufacturer_id = $request->manufacturer_id;
     $product->price = $request->price;
-    $product->quantity = $request->quantity;
+    // $product->quantity = $request->quantity;
     $product->description = $request->description ?? '';
 
     // Upload ảnh (nếu có)
@@ -143,7 +143,7 @@ public function showP($id)
         'scent_id' => 'required|exists:scents,id',
         'manufacturer_id' => 'required|exists:manufacturers,id',
         'price' => 'required|numeric|min:0',
-        'quantity' => 'required|integer|min:0',
+        // 'quantity' => 'required|integer|min:0',
         'description' => 'nullable|string',
         // ❌ KHÔNG ép validate image nếu không upload file
         'image' => 'nullable',
@@ -217,5 +217,21 @@ public function showP($id)
 
         // Trả về danh sách sản phẩm dưới dạng JSON
         return response()->json($products);
+    }
+     public function stock()
+    {
+        $products = Product::select('id', 'name', 'quantity', 'status', 'image')->get();
+
+        $data = $products->map(function ($product) {
+            return [
+                'id' => $product->id,
+                'name' => $product->name,
+                'quantity' => $product->quantity,
+                'status' => $product->status ? 'Còn hàng' : 'Sắp hết hàng',
+                'image' => $product->image ? url($product->image) : null,
+            ];
+        });
+
+        return response()->json($data);
     }
 }

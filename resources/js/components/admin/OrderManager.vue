@@ -1,5 +1,5 @@
 <template>
-  <div class="order-list">
+  <div class="order-manager">
     <!-- Header -->
     <HeaderAdmin class="header" />
 

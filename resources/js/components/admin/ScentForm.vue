@@ -1,35 +1,28 @@
 <template>
-  <div class="manufacturer-form">
+  <div class="scent-form">
     <HeaderAdmin class="header" />
 
     <div class="admin-body">
       <Sidebar class="sidebar" />
 
       <div class="main-content">
-        <h2>Thêm nhà sản xuất</h2>
+        <h2>{{ isEdit ? "Cập nhật mùi hương" : "Thêm mùi hương" }}</h2>
 
-        <form @submit.prevent="createManufacturer" class="form-container">
+        <form @submit.prevent="saveScent" class="form-container">
 
           <div class="form-group">
-            <label>Tên nhà sản xuất:</label>
+            <label>Tên mùi hương:</label>
             <input v-model="form.name" type="text" required />
           </div>
 
           <div class="form-group">
-            <label>Quốc gia:</label>
-            <input v-model="form.country" type="text" placeholder="Ví dụ: Việt Nam" />
-          </div>
-
-          <div class="form-group">
             <label>Mô tả:</label>
-            <textarea v-model="form.description" placeholder="Giới thiệu về NSX"></textarea>
+            <textarea v-model="form.description" placeholder="Mô tả mùi hương"></textarea>
           </div>
-
-          <button type="submit" class="btn btn-primary">Lưu nhà sản xuất</button>
-            <router-link to="/admin/manufacturer-manager" class="btn btn-secondary">
+            <button type="submit" class="btn btn-primary">Lưu mùi hương</button>
+            <router-link to="/admin/scent-manager" class="btn btn-secondary">
                Hủy
             </router-link>
-
         </form>
       </div>
     </div>
@@ -43,27 +36,49 @@ import Sidebar from "@/components/SideBar.vue";
 
 export default {
   components: { HeaderAdmin, Sidebar },
+
   data() {
     return {
       baseURL: "http://localhost:8000",
+      isEdit: false,
+      id: null,
       form: {
         name: "",
-        country: "",
         description: "",
       },
     };
   },
 
-  methods: {
-    async createManufacturer() {
-      try {
-        await axios.post(`${this.baseURL}/api/storeM`, this.form);
+  async mounted() {
+    this.id = this.$route.params.id;
 
-        alert("Thêm nhà sản xuất thành công!");
-        this.$router.push("/admin/manufacturer-manager");
+    // Nếu có id → chế độ edit
+    if (this.id) {
+      this.isEdit = true;
+      try {
+        const res = await axios.get(`${this.baseURL}/api/showS/${this.id}`);
+        this.form = res.data;
       } catch (err) {
-        console.error("Lỗi khi thêm NSX:", err);
-        alert("Không thể thêm nhà sản xuất!");
+        console.error("Lỗi load mùi hương:", err);
+      }
+    }
+  },
+
+  methods: {
+    async saveScent() {
+      try {
+        if (this.isEdit) {
+          await axios.put(`${this.baseURL}/api/updateS/${this.id}`, this.form);
+          alert("Cập nhật mùi hương thành công!");
+        } else {
+          await axios.post(`${this.baseURL}/api/storeS`, this.form);
+          alert("Thêm mùi hương thành công!");
+        }
+
+        this.$router.push("/admin/scent-manager");
+      } catch (err) {
+        console.error("Lỗi lưu:", err);
+        alert("Không thể lưu mùi hương!");
       }
     },
   },

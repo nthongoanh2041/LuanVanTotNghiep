@@ -32,7 +32,7 @@
           <table class="order-table" v-if="orderItems.length">
             <thead>
               <tr>
-                <th>#</th>
+                <th>STT</th>
                 <th>Ảnh</th>
                 <th>Tên sản phẩm</th>
                 <th>Giá</th>
@@ -62,7 +62,7 @@
 
           <!-- Nút quay lại -->
           <div class="actions">
-            <router-link to="/admin/order-list" class="btn-back">⬅ Quay lại danh sách đơn hàng</router-link>
+            <router-link to="/admin/order-manager" class="btn-back">⬅ Quay lại danh sách đơn hàng</router-link>
           </div>
         </div>
       </div>

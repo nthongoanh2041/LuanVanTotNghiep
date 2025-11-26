@@ -46,6 +46,7 @@ Route::get('/indexP', [ProductController::class, 'indexP']);
 Route::put('/products/{id}', [ProductController::class, 'updateP']);
 // routes/api.php
 Route::get('/showP/{id}', [ProductController::class, 'showP']);
+Route::get('/stock', [ProductController::class, 'stock']);
 
 /*Cart*/
 Route::post('/storeC', [CartController::class, 'storeC']);

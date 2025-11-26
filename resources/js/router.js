@@ -6,7 +6,7 @@ import Dashboard from './components/Dashboard.vue'
 import ProductsList from '@/components/products/ProductsList.vue';
 import DashboardAdmin from './components/admin/DashboardAdmin.vue'
 import ProductManager from './components/admin/ProductManager.vue'
-
+import ProductStock from './components/admin/ProductStock.vue'
 import ProductForm from './components/admin/ProductForm.vue';
 import ProductEdit from './components/admin/ProductEdit.vue'
 import CategorieManager from './components/admin/CategorieManager.vue'
@@ -24,7 +24,13 @@ import OrderManager from'@/components/admin/OrderManager.vue';
 import OrderItemsManager from'@/components/admin/OrderItemsManager.vue';
 import ManufacturerManager from './components/admin/ManufacturerManager.vue'
 import ManufacturerForm from './components/admin/ManufacturerForm.vue'
+import ManufacturerEdit from './components/admin/ManufacturerEdit.vue'
 import ScentManager from './components/admin/ScentManager.vue'
+import ScentForm from './components/admin/ScentForm.vue'
+import ScentEdit from './components/admin/ScentEdit.vue'
+
+
+
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
@@ -32,41 +38,107 @@ const routes = [
   { path: '/login', component: Login }, // ✅ Trang đăng ký
   { path: '/dashboard', component: Dashboard, },
 
-
+  /////////////////// [ADMIN] ////////////////////////
+  {
+    path: '/admin/dashboard',
+    component: DashboardAdmin,
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+  },
+/////Product
+{
+    path: '/admin/product-manager',
+    component: ProductManager, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+},
 
 {
   path: "/admin/product-form",
   name: 'ProductForm',
-  component: ProductForm,
-  props: true,
+  component: ProductForm, // tên file
+  meta: { requiresAuth: true, adminOnly: true },
+},
+
+{
+  path: '/admin/products/:id/edit',
+  component: ProductEdit,
+  meta: { requiresAuth: true, adminOnly: true },
 },
 {
-  path: "/admin/categorie-list",
+  path: '/admin/stock',
+  component: ProductStock,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+
+////Categories
+{
+  path: "/admin/categorie-manager",
   name: 'CategorieManager',
   component: CategorieManager,
-  props: true,
+  meta: { requiresAuth: true, adminOnly: true },
 },
+
 {
   path: "/admin/categorie-form",
   name: 'CategorieForm',
   component: CategorieForm,
-  props: true,
+  meta: { requiresAuth: true, adminOnly: true },
 },
-{
-    path: '/admin/categorie/:id/products',
-    name: 'CategorieProduct',
-    component: CategorieProduct,
-     meta: { requiresAuth: true, adminOnly: true },
-  },
+
 {
      path: '/admin/categorie/:id/edit',
     name: 'CategorieEdit',
     component: CategorieEdit,
     meta: { requiresAuth: true, adminOnly: true },
 },
-///////order admin
+
 {
-     path: '/admin/order-list',
+    path: '/admin/categorie/:id/products',
+    name: 'CategorieProduct',
+    component: CategorieProduct,
+    meta: { requiresAuth: true, adminOnly: true },
+  },
+
+///////Manufacturer
+{
+ path: '/admin/manufacturer-manager',
+ component: ManufacturerManager, // tên file
+ meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+  },
+
+{
+  path: "/admin/manufacturer-form",
+  name: 'ManufacturerForm',
+  component: ManufacturerForm,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+
+{
+  path: "/admin/manufacturer-edit/:id",
+  name: 'ManufacturerEdit',
+  component: ManufacturerEdit,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+
+//////Scent
+{
+    path: '/admin/scent-manager',
+    component: ScentManager, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+},
+{
+    path: '/admin/scent-form',
+    component: ScentForm, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+},
+{
+    path: '/admin/scent-edit/:id',
+    component: ScentEdit, // tên file
+    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
+},
+
+///////order
+{
+     path: '/admin/order-manager',
     name: 'OrderManager',
     component: OrderManager,
     meta: { requiresAuth: true, adminOnly: true },
@@ -79,83 +151,47 @@ const routes = [
 },
 
 
-/////////
+/////////////////// [USER] ////////////////////////
 {
-     path: '/products',
+    path: '/products',
     name: 'AllCategory',
     component: AllCategory,
     props: true,
 },
 {
-     path: '/category/:id',
+    path: '/category/:id',
     name: 'Category_Product',
     component: Category_Product,
     props: true,
 },
 /////
 {
-     path: '/product',
+    path: '/product',
     name: 'AllScent',
     component: AllScent,
     props: true,
 },
 {
-     path: '/scent/:id',
+    path: '/scent/:id',
     name: 'Scent_Product',
     component: Scent_Product,
     props: true,
 },
 
-  {
-    path: '/admin/dashboard',
-    component: DashboardAdmin,
-    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
-  },
-  {
-    path: '/admin/product-manager',
 
-    component: ProductManager, // tên file
-    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
-  },
-  {
-  path: '/admin/products/:id/edit',
- component: ProductEdit,
-  meta: { requiresAuth: true, adminOnly: true },
-},
-/////
-// {
-// path: '/admin/manufacture-form',
-//  component: ManufacturerManager,
-//   meta: { requiresAuth: true, adminOnly: true },
-// },
 
-{
-  path: "/admin/manufacturer-form",
-  name: 'ManufacturerForm',
-  component: ManufacturerForm,
-  props: true,
-},
+
   {
   path: '/products/:id/show',
   component: ProductDetail,
 },
 
-/////
-{
-    path: '/admin/manufacturer-manager',
 
-    component: ManufacturerManager, // tên file
-    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
-  },
 
-////scent
-{
-    path: '/admin/scent-manager',
-    component: ScentManager, // tên file
-    meta: { requiresAuth: true, adminOnly: true }, // ✅ Chỉ admin mới vào được
-  },
 
-///
+
+
+
 {
      path: '/cart',
     name: 'Cart',
