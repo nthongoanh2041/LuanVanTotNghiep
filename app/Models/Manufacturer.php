@@ -9,7 +9,7 @@ class Manufacturer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['country', 'name', 'description'];
+    protected $fillable = ['country', 'name', 'email','phone','description'];
 
     public function products()
     {

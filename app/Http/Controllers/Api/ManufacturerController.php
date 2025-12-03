@@ -17,6 +17,8 @@ class ManufacturerController extends Controller
     {
         $request->validate(['name' => 'required|string|max:255']);
         $request->validate(['country' => 'required|string|max:255']);
+        $request->validate(['email' => 'required|string|max:255']);
+        $request->validate(['phone' => 'required|string|max:255']);
         $request->validate(['description' => '|string|max:255']);
         $manufacturer = Manufacturer::create($request->all());
         return response()->json($manufacturer, 201);
@@ -40,6 +42,8 @@ class ManufacturerController extends Controller
     $validatedData = $request->validate([
         'country'=>'required|string|max:255',
         'name' => 'required|string|max:255',
+        'email' => 'required|string|max:255',
+        'phone' => 'required|string|max:255',
         'description' => 'nullable|string',
     ]);
 

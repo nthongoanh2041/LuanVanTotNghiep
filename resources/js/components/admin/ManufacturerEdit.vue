@@ -17,10 +17,20 @@
               <input v-model="manufacturer.name" type="text" class="form-control" required />
             </div>
 
-            <!-- Quốc gia -->
+            <!-- Địa chỉ -->
             <div class="form-group">
-              <label>Quốc gia:</label>
+              <label>Địa chỉ:</label>
               <input v-model="manufacturer.country" type="text" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label>Email:</label>
+              <input v-model="manufacturer.email" type="text" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label>Số điện thoại:</label>
+              <input v-model="manufacturer.phone" type="text" class="form-control" />
             </div>
 
             <!-- Mô tả -->
@@ -31,7 +41,7 @@
 
             <!-- Nút -->
             <div class="form-actions">
-              <button type="submit" class="btn btn-primary">💾 Lưu thay đổi</button>
+              <button type="submit" class="btn btn-primary"> Lưu thay đổi</button>
               <router-link to="/admin/manufacturer-manager" class="btn btn-secondary">⬅ Quay lại</router-link>
             </div>
           </form>
@@ -55,6 +65,8 @@ export default {
       manufacturer: {
         name: "",
         country: "",
+        email:"",
+        phone:"",
         description: "",
       },
       loading: false,

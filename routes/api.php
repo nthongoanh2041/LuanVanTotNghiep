@@ -9,7 +9,13 @@ use App\Http\Controllers\Api\ManufacturerController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\ManufacturerRequestController;
+use App\Http\Controllers\NotificationController;
 
+Route::get('/notifications/{id}', [NotificationController::class, 'getNotifications']);
+Route::get('/notifications/{userId}', [NotificationController::class, 'index']);
+Route::post('/notifications/read/{id}', [NotificationController::class, 'markAsRead']);
+Route::post('/notifications/read-all/{userId}', [NotificationController::class, 'markAllAsRead']);
 
 
 
@@ -39,6 +45,11 @@ Route::get('/indexM', [ManufacturerController::class, 'indexM']);               
 Route::get('/showM/{id}', [ManufacturerController::class, 'showM']);                    /*hiển thị NSX theo id*/
 Route::put('/updateM/{id}', [ManufacturerController::class, 'updateM']);                /*sửa NSX*/
 Route::delete('/destroyM/{id}', [ManufacturerController::class, 'destroyM']);           /*xóa NSX*/
+Route::post('/manufacturer-request', [ManufacturerRequestController::class, 'storeM']);
+
+
+
+
 
 /*Product*/
 Route::post('/storeP', [ProductController::class, 'storeP']);

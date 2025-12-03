@@ -16,8 +16,18 @@
           </div>
 
           <div class="form-group">
-            <label>Quốc gia:</label>
+            <label>Địa chỉ:</label>
             <input v-model="form.country" type="text" placeholder="Ví dụ: Việt Nam" />
+          </div>
+
+          <div class="form-group">
+            <label>Số điện thoại:</label>
+            <input v-model="form.phone" type="text"/>
+          </div>
+
+          <div class="form-group">
+            <label>Email:</label>
+            <input v-model="form.email" type="text" placeholder="Ví dụ: @gmail.com" />
           </div>
 
           <div class="form-group">

@@ -28,7 +28,7 @@ import ManufacturerEdit from './components/admin/ManufacturerEdit.vue'
 import ScentManager from './components/admin/ScentManager.vue'
 import ScentForm from './components/admin/ScentForm.vue'
 import ScentEdit from './components/admin/ScentEdit.vue'
-
+import StockRequest from './components/admin/StockRequest.vue'
 
 
 
@@ -64,8 +64,14 @@ const routes = [
   meta: { requiresAuth: true, adminOnly: true },
 },
 {
-  path: '/admin/stock',
+  path: '/admin/stock-manager',
   component: ProductStock,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+
+{
+  path: "/admin/stock-request/:id",
+  component: StockRequest,
   meta: { requiresAuth: true, adminOnly: true },
 },
 
@@ -178,19 +184,10 @@ const routes = [
     props: true,
 },
 
-
-
-
   {
   path: '/products/:id/show',
   component: ProductDetail,
 },
-
-
-
-
-
-
 
 {
      path: '/cart',

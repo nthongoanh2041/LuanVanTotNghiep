@@ -15,6 +15,8 @@
               <tr>
                 <th>STT</th>
                 <th>Tên</th>
+                <th>Email</th>
+                <th>Số điện thoại</th>
                 <th>Quốc gia</th>
                 <th>Mô tả</th>
                 <th>Hành động</th>
@@ -24,6 +26,8 @@
               <tr v-for="m in paginated" :key="m.id">
                 <td>{{ m.id }}</td>
                 <td>{{ m.name }}</td>
+                <td>{{ m.email }}</td>
+                <td>{{ m.phone }}</td>
                 <td>{{ m.country }}</td>
                 <td>{{ m.description }}</td>
                 <td>
@@ -206,6 +210,7 @@ export default {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
+  word-break: break-word;
 }
 
 .table th,

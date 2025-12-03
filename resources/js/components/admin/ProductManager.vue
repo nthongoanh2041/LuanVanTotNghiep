@@ -12,11 +12,10 @@
         <div v-if="loading" class="loading">
           <i class="fa fa-spinner fa-spin"></i> Đang tải dữ liệu...
         </div>
-
         <div v-else>
           <h2 class="section-title">Danh sách sản phẩm</h2>
-
           <table class="table-product">
+
   <thead>
     <tr>
       <th>Hình ảnh</th>

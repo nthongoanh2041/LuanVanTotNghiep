@@ -49,7 +49,7 @@
           </table>
         </div>
 
-        <!-- Pagination -->
+        <!-- Phân Trang -->
         <nav class="pagination-wrap" v-if="totalPages > 1">
           <ul class="pagination">
             <li class="page-item" :class="{ disabled: currentPage === 1 }">
@@ -95,7 +95,7 @@ export default {
       baseURL: "http://127.0.0.1:8000",
       scents: [],
 
-      // Pagination
+      // phân trang
       currentPage: 1,
       pageSize: 6,
     };
@@ -152,7 +152,8 @@ export default {
 </script>
 
 <style scoped>
-.header { position: fixed;
+.header {
+        position: fixed;
         top:0; left:0;
         right:0;
         z-index:100;

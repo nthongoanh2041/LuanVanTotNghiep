@@ -28,7 +28,7 @@
         <i class="fas fa-file-invoice"></i> Quản lý Đơn hàng
       </router-link>
 
-      <router-link to="/admin/stock" class="sidebar-link">
+      <router-link to="/admin/stock-manager" class="sidebar-link">
         <i class="fas fa-box"></i> Quản lý Kho
       </router-link>
 

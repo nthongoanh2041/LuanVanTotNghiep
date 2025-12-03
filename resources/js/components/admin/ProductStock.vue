@@ -34,6 +34,7 @@
               <th>Tên sản phẩm</th>
               <th>Số lượng</th>
               <th>Trạng thái</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -49,9 +50,29 @@
                   {{ product.status }}
                 </span>
               </td>
+               <td>
+  <!-- Nút Đặt hàng khi sắp hết -->
+  <router-link
+    v-if="product.status === 'Sắp hết hàng'"
+    :to="'/admin/stock-request/' + product.id"
+    class="btn btn-warning btn-sm"
+  >
+    Đặt hàng
+  </router-link>
+
+  <!-- Nút Nhập hàng -->
+  <router-link
+    v-if="product.status === 'Sắp hết hàng'"
+    :to="'/admin/stock-import/' + product.id"
+    class="btn btn-warning btn-sm"
+  >
+    Nhập hàng
+  </router-link>
+</td>
             </tr>
           </tbody>
         </table>
+
 
         <!-- Pagination -->
         <nav v-if="totalPages > 1" aria-label="Pagination">
@@ -122,6 +143,7 @@ export default {
   mounted() {
     this.fetchProducts();
   },
+
   methods: {
     async fetchProducts() {
       this.loading = true;
@@ -226,8 +248,8 @@ export default {
 }
 
 .img-small {
-  width: 100px;
-  height: 100px;
+  width: 170px;
+  height: 170px;
   object-fit: cover;
   border-radius: 6px;
   border: 1px solid #ddd;
@@ -279,4 +301,17 @@ export default {
   background: #000;
   color: white;
 }
+
+.btn-warning {
+  padding: 6px 12px;
+  background: #000000;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn-warning:hover {
+  background: #845100;
+}
+
 </style>
