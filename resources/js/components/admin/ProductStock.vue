@@ -13,13 +13,13 @@
 
         <!-- Search -->
         <div class="search-container">
-          <input
-            type="text"
-            v-model="searchQuery"
-            placeholder="Tìm theo tên sản phẩm..."
-            class="search-input"
-          />
-        </div>
+  <router-link
+    to="/admin/stock-history"
+    class="btn-history"
+  >
+    Xem lịch sử phiếu nhập
+  </router-link>
+</div>
 
         <!-- Loading -->
         <div v-if="loading" class="loading">

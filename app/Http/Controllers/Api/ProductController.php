@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Scent;
+use App\Models\StockImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Prompts\Prompt;
@@ -234,4 +235,50 @@ public function showP($id)
 
         return response()->json($data);
     }
+
+  public function importStock(Request $request, $id)
+{
+    // Validate dữ liệu
+    $request->validate([
+        'quantity' => 'required|integer|min:1',
+        'note' => 'nullable|string',
+        'user_id' => 'required|exists:users,id', // kiểm tra user tồn tại
+    ]);
+
+    // Lấy sản phẩm
+    $product = Product::find($id);
+
+    if (!$product) {
+        return response()->json([
+            'message' => 'Không tìm thấy sản phẩm'
+        ], 404);
+    }
+
+    // Tạo phiếu nhập
+    $import = StockImport::create([
+        'user_id'     => $request->user_id,
+        'product_id'  => $product->id,
+        'quantity'    => $request->quantity,
+        'note'        => $request->note,
+        'import_date' => now(), // ngày tạo phiếu nhập
+    ]);
+
+    // Cập nhật số lượng tồn trong bảng product
+    $product->quantity += $request->quantity;
+
+    // Cập nhật trạng thái
+    if ($product->quantity > 20) {
+        $product->status = "Còn hàng";
+    }
+
+    $product->save();
+
+    return response()->json([
+        'message' => 'Nhập hàng thành công!',
+        'product' => $product,
+        'import'  => $import
+    ], 201);
+}
+
+
 }

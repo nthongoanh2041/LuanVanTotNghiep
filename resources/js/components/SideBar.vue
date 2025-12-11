@@ -32,9 +32,9 @@
         <i class="fas fa-box"></i> Quản lý Kho
       </router-link>
 
-      <router-link to="" class="sidebar-link">
+      <!-- <router-link to="" class="sidebar-link">
         <i class="fas fa-user"></i> Khách hàng thường xuyên
-      </router-link>
+      </router-link> -->
 
 
 

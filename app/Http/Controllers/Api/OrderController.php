@@ -93,34 +93,55 @@ class OrderController extends Controller
 public function updateO(Request $request, $id)
 {
     try {
-        $order = Order::find($id);
+        $order = Order::with('orderItems')->find($id);
 
         if (!$order) {
             return response()->json(['message' => '❌ Không tìm thấy đơn hàng!'], 404);
         }
 
-        // Cho phép cập nhật cả status lẫn is_processed
         $validatedData = $request->validate([
             'status' => 'nullable|string|in:pending,processing,completed,cancelled',
             'is_processed' => 'nullable|boolean',
         ]);
 
-        // Nếu có status thì cập nhật
+        // --- Nếu cập nhật STATUS ---
         if ($request->has('status')) {
+
+            // 🟡 Nếu status chuyển sang processing → trừ số lượng
+            if ($request->status === 'processing' && $order->is_processed == 0) {
+
+                foreach ($order->orderItems as $item) {
+                    $product = $item->product;
+
+                    if ($product->quantity < $item->quantity) {
+                        return response()->json([
+                            "message" => "❌ Sản phẩm ".$product->name." không đủ số lượng!",
+                        ], 400);
+                    }
+
+                    // 🔻 Trừ số lượng trong kho
+                    $product->quantity -= $item->quantity;
+                    $product->save();
+                }
+
+                // Đánh dấu đã xử lý để không trừ lần nữa
+                $order->is_processed = 1;
+            }
+
             $order->status = $request->status;
         }
 
-        // Nếu có is_processed thì cập nhật (true/false → 1/0)
         if ($request->has('is_processed')) {
             $order->is_processed = $request->is_processed ? 1 : 0;
         }
 
-        $order->save(); // lưu lại
+        $order->save();
 
         return response()->json([
             'message' => '✅ Cập nhật đơn hàng thành công!',
             'order' => $order,
         ], 200);
+
     } catch (\Exception $e) {
         return response()->json([
             'message' => '❌ Cập nhật đơn hàng thất bại!',
@@ -128,6 +149,7 @@ public function updateO(Request $request, $id)
         ], 500);
     }
 }
+
 
 
 public function showO($id)

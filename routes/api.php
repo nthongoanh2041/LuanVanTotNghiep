@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\ManufacturerRequestController;
+use App\Http\Controllers\StockImportController;
 use App\Http\Controllers\NotificationController;
 
 Route::get('/notifications/{id}', [NotificationController::class, 'getNotifications']);
@@ -58,6 +59,12 @@ Route::put('/products/{id}', [ProductController::class, 'updateP']);
 // routes/api.php
 Route::get('/showP/{id}', [ProductController::class, 'showP']);
 Route::get('/stock', [ProductController::class, 'stock']);
+Route::get('/stock-import/{id}', [ProductController::class, 'importStock']);
+Route::post('/import/{id}', [ProductController::class, 'importStock']);
+
+Route::get('/import/history', [StockImportController::class, 'history']);
+
+
 
 /*Cart*/
 Route::post('/storeC', [CartController::class, 'storeC']);
