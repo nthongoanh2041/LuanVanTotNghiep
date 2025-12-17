@@ -22,6 +22,7 @@
             <tr>
               <th>Mã phiếu</th>
               <th>Tên sản phẩm</th>
+              <th>Hành động</th>
             </tr>
           </thead>
 
@@ -30,13 +31,17 @@
               v-for="item in paginatedHistory"
               :key="item.id"
               class="clickable-row"
-              @click="openDetail(item)"
             >
-              <td>#{{ item.id }}</td>
+              <td>{{ item.id }}</td>
               <td>{{ item.product?.name }}</td>
+              <td> <button class="btn-view" @click.stop="goToDetail(item.id)">
+                Xem
+                    </button>
+              </td>
             </tr>
           </tbody>
         </table>
+        <button class="back-btn" @click="goBack">Quay lại</button>
 
         <!-- PAGINATION -->
         <nav v-if="totalPages > 1" aria-label="Pagination">
@@ -63,21 +68,6 @@
       </div>
     </div>
 
-    <!-- POPUP CHI TIẾT -->
-    <div v-if="showPopup" class="popup-overlay" @click.self="closePopup">
-      <div class="popup">
-        <h3>Chi tiết phiếu nhập</h3>
-
-        <p><strong>Mã phiếu:</strong> #{{ selected?.id }}</p>
-        <p><strong>Sản phẩm:</strong> {{ selected?.product?.name }}</p>
-        <p><strong>Số lượng:</strong> {{ selected?.quantity }}</p>
-        <p><strong>Nhân viên:</strong> {{ selected?.user?.name }}</p>
-        <p><strong>Ngày nhập:</strong> {{ selected?.import_date }}</p>
-        <p><strong>Ghi chú:</strong> {{ selected?.note }}</p>
-
-        <button class="close-btn" @click="closePopup">Đóng</button>
-      </div>
-    </div>
 
   </div>
 </template>
@@ -133,15 +123,13 @@ export default {
       }
     },
 
-    openDetail(item) {
-      this.selected = item;
-      this.showPopup = true;
+     goToDetail(id) {
+    this.$router.push(`/admin/import/${id}`);
+    },
+    goBack() {
+      this.$router.back();
     },
 
-    closePopup() {
-      this.showPopup = false;
-      this.selected = null;
-    },
 
     nextPage() {
       if (this.currentPage < this.totalPages) this.currentPage++;
@@ -203,38 +191,26 @@ export default {
 .clickable-row:hover {
   background-color: #f0f8ff;
 }
-
-/* POPUP */
-.popup-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-}
-
-.popup {
-  background: white;
-  padding: 20px;
-  width: 350px;
-  border-radius: 8px;
-}
-
-.close-btn {
+ .btn-view{
   margin-top: 15px;
   padding: 8px 15px;
-  background: #007bff;
+  background: #016334;
   border: none;
   color: white;
   border-radius: 5px;
   cursor: pointer;
+ }
+.back-btn {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-.close-btn:hover {
+
+.back-btn:hover {
   opacity: 0.9;
 }
 </style>

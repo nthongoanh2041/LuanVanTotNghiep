@@ -205,21 +205,20 @@ export default {
       };
 
       try {
-        const res = await axios.post(`${this.baseURL}/api/storeO`, orderData);
-        console.log("✅ Kết quả:", res.data);
+  const res = await axios.post(`${this.baseURL}/api/storeO`, orderData);
+  console.log("Kết quả:", res.data);
 
-        // ✅ Hiện thông báo và đợi 5 giây trước khi quay lại trang giỏ hàng
-        this.orderSuccess = true;
-        this.cartItems = [];
+  this.orderSuccess = true;
+  this.cartItems = [];
 
-        setTimeout(() => {
-          this.$router.push("/cart");
-        }, 5000); // 5 giây
+  setTimeout(() => {
+    this.$router.push("/cart");
+  }, 5000);
 
-      } catch (err) {
-        console.error("❌ Lỗi khi đặt hàng:", err);
-        alert("Đặt hàng thất bại, vui lòng thử lại!");
-      }
+} catch (err) {
+  console.error("❌ Lỗi khi đặt hàng:", err);
+  alert("Đặt hàng thất bại, vui lòng thử lại!");
+}
     },
   },
 };

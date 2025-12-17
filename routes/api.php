@@ -63,6 +63,8 @@ Route::get('/stock-import/{id}', [ProductController::class, 'importStock']);
 Route::post('/import/{id}', [ProductController::class, 'importStock']);
 
 Route::get('/import/history', [StockImportController::class, 'history']);
+Route::get('/import/history/{id}', [StockImportController::class, 'show']);
+
 
 
 

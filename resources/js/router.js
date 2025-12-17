@@ -31,7 +31,7 @@ import ScentEdit from './components/admin/ScentEdit.vue'
 import StockRequest from './components/admin/StockRequest.vue'
 import StockImport from './components/admin/StockImport.vue'
 import StockImportHistory from './components/admin/StockImportHistory.vue'
-
+import ImportDetail from './components/admin/ImportDetail.vue'
 
 const routes = [
   { path: '/', component: HomePage },        // ✅ Trang mặc định
@@ -84,6 +84,11 @@ const routes = [
 {
   path: "/admin/stock-history",
   component: StockImportHistory,
+  meta: { requiresAuth: true, adminOnly: true },
+},
+{
+  path: "/admin/import/:id",
+  component: ImportDetail,
   meta: { requiresAuth: true, adminOnly: true },
 },
 

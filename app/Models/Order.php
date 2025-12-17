@@ -22,16 +22,16 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(Order_items::class);
+        return $this->hasMany(OrderItems::class);
     }
 
     public function orderItems()
     {
-    return $this->hasMany(Order_items::class, 'order_id');
+    return $this->hasMany(OrderItems::class, 'order_id');
     }
        public function order_items()
 {
-    return $this->hasMany(Order_items::class, 'order_id', 'id');
+    return $this->hasMany(OrderItems::class, 'order_id', 'id');
 }
 
 }

@@ -15,5 +15,18 @@ class StockImportController extends Controller
         ->get()
     );
 }
+public function show($id)
+{
+    $item = StockImport::with('product', 'user')->find($id);
+
+    if (!$item) {
+        return response()->json([
+            'message' => 'Không tìm thấy phiếu nhập'
+        ], 404);
+    }
+
+    return response()->json($item);
+}
+
 
 }
